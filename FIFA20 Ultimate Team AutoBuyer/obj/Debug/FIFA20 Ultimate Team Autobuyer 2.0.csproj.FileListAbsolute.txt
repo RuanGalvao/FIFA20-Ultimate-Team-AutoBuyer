@@ -1,0 +1,69 @@
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\FIFA20 Ultimate Team Autobuyer 2.0.exe.config
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\FIFA20 Ultimate Team Autobuyer 2.0.exe
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\FIFA20 Ultimate Team Autobuyer 2.0.pdb
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csprojAssemblyReference.cache
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\MainWindow.g.cs
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\App.g.cs
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0_MarkupCompile.cache
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\MainWindow.baml
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.g.resources
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20_Ultimate_Team_Autobuyer_2._0.Properties.Resources.resources
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csproj.GenerateResource.cache
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.exe
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.pdb
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\Newtonsoft.Json.dll
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\Newtonsoft.Json.xml
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csproj.CopyComplete
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\WPFTextBoxAutoComplete.dll
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\WPFTextBoxAutoComplete.pdb
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\WPF_AutoCompleteComboBox.dll
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\ControlzEx.dll
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\MahApps.Metro.dll
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\ControlzEx.pdb
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\MahApps.Metro.pdb
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\MahApps.Metro.xml
+C:\Users\jordan.paulson\Source\repos\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csproj.Fody.CopyLocal.cache
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\FIFA20 Ultimate Team Autobuyer 2.0.exe.config
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\FIFA20 Ultimate Team Autobuyer 2.0.exe
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\FIFA20 Ultimate Team Autobuyer 2.0.pdb
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\ControlzEx.dll
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\MahApps.Metro.dll
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\WPFTextBoxAutoComplete.dll
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\ControlzEx.pdb
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\MahApps.Metro.pdb
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\MahApps.Metro.xml
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\WPFTextBoxAutoComplete.pdb
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csprojAssemblyReference.cache
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\MainWindow.baml
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\MainWindow.g.cs
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\App.g.cs
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0_MarkupCompile.cache
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.g.resources
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20_Ultimate_Team_Autobuyer_2._0.Properties.Resources.resources
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csproj.GenerateResource.cache
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csproj.Fody.CopyLocal.cache
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csproj.CopyComplete
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.exe
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team Autobuyer 2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.pdb
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\Newtonsoft.Json.dll
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\Newtonsoft.Json.xml
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\MainWindow.baml
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\MainWindow.g.cs
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\App.g.cs
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csproj.GenerateResource.cache
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csproj.Fody.CopyLocal.cache
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csproj.CopyComplete
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer 2.0.csprojAssemblyReference.cache
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\DotNetKit.Wpf.AutoCompleteComboBox.dll
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer_MarkupCompile.cache
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer.g.resources
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20_Ultimate_Team_Autobuyer.Properties.Resources.resources
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\FIFA20 Ultimate Team Autobuyer.exe.config
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\FIFA20 Ultimate Team Autobuyer.exe
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\Debug\FIFA20 Ultimate Team Autobuyer.pdb
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer.exe
+C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\Debug\FIFA20 Ultimate Team Autobuyer.pdb
