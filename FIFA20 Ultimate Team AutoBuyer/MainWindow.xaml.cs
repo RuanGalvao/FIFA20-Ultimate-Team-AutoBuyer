@@ -7,8 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace FIFA20_Ultimate_Team_Autobuyer
@@ -156,8 +154,6 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                                 // Moves brought items from unassigned to tradepile ready for re-sale
                                 foreach (var item in broughtItems)
                                 {
-
-
                                     Sleep();
                                     await tradePile.MoveToTradePileAsync(item, sessionID);
                                 }
