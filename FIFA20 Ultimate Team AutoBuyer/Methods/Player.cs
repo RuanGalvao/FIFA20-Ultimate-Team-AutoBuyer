@@ -23,7 +23,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
         {
             return allPlayers.Players
                 .Concat(allPlayers.LegendsPlayers)
-                .Where(x => x.r >= 80 && string.Equals(string.IsNullOrEmpty(x.c) ? x.f + ' ' + x.l : x.c, playerName, StringComparison.OrdinalIgnoreCase))
+                .Where(x => string.Equals(string.IsNullOrEmpty(x.c) ? x.f + ' ' + x.l : x.c, playerName, StringComparison.OrdinalIgnoreCase))
                 .Select(player => player.id)
                 .FirstOrDefault();
         }
@@ -33,9 +33,9 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
             return allPlayers.Players.Concat(allPlayers.LegendsPlayers).Where(x => x.id == playerID).Select(p => string.IsNullOrEmpty(p.c) ? p.f + ' ' + p.l : p.c).FirstOrDefault();
         }
 
-        public static Dictionary<int, string> ReturnAllPlayers()
+        public static List<Models.Player.PlayerModel> ReturnAllPlayers()
         {
-            return allPlayers.Players.Concat(allPlayers.LegendsPlayers).Where(r => r.r >= 80).ToDictionary(p => p.id, p => string.IsNullOrEmpty(p.c) ? p.f + ' ' + p.l : p.c);
+            return allPlayers.Players.Concat(allPlayers.LegendsPlayers).ToList();
         }
     }
 }

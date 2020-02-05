@@ -9,8 +9,17 @@ namespace FIFA20_Ultimate_Team_Autobuyer
     public class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public List<string> Players { get => AllPlayers.OrderBy(X => X.Value).Select(p => p.Value).ToList(); }
-        public Dictionary<int, string> AllPlayers { get => Methods.Player.ReturnAllPlayers(); }
+
+        public List<string> Players { get => 
+                AllPlayers
+                .OrderByDescending(x => x.r)
+                .Select(x => string.IsNullOrEmpty(x.c) ? $"{x.f} {x.l} {x.r}" : $"{x.c} {x.r}")
+                .Where(x => x.IndexOf(SelectedPlayer, 0, StringComparison.InvariantCultureIgnoreCase) != -1 && SelectedPlayer.Length > 0)
+                .Take(5)
+                .ToList(); 
+        }
+
+        public List<Models.Player.PlayerModel> AllPlayers { get => Methods.Player.ReturnAllPlayers(); }
         public ObservableCollection<Models.Log> Log { get; set; } = new ObservableCollection<Models.Log>();
         public ObservableCollection<Models.Search> SearchPlayers { get; set; } = new ObservableCollection<Models.Search>();
         public List<string> SellPriceBin { get => new List<string> { "Low", "Medium", "High", "Automatic" }; }

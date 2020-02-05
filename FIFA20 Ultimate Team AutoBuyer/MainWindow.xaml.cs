@@ -116,13 +116,13 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                             {
                                 // Unable to find listings. Increase price
                                 UpdatePlayerObject("SearchPrice", CalculateBid.CalculateNextBid(currentPlayer.SearchPrice).ToString(), (playerIndex - 1) % players.Count);
-                                AddToLog($"Increasing search price for {currentPlayer.Name} to {currentPlayer.SearchPrice}");
+                                AddToLog($"Increasing price for {currentPlayer.Name} {currentPlayer.Rating} to {currentPlayer.SearchPrice}");
                             }
                             else if (playerData.auctionInfo.Count() > 10)
                             {
                                 // Too many listings found. Reduce price
                                 UpdatePlayerObject("SearchPrice", CalculateBid.CalculatePreviousBid(currentPlayer.SearchPrice).ToString(), (playerIndex - 1) % players.Count);
-                                AddToLog($"Decreasing search price for {currentPlayer.Name} to {currentPlayer.SearchPrice}");
+                                AddToLog($"Decreasing price for {currentPlayer.Name} {currentPlayer.Rating} to {currentPlayer.SearchPrice}");
                             }
                             else
                             {
@@ -141,9 +141,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                                         var relistPrice = sell.CalculatePrice(currentPlayer.SearchPrice, sellPriceBin, currentCredits);
                                         Dispatcher.Invoke(() =>
                                         {
-                                            //var profit = Convert.ToInt32(ViewModel.Profit);
-                                            //ViewModel.Profit = profit + ((int)(relistPrice * .95) - item.BuyNowPrice).ToString();
-                                            ViewModel.Profit += ((int)(relistPrice * .95) - item.BuyNowPrice);
+                                            ViewModel.Profit += (int)(relistPrice * .95) - item.BuyNowPrice;
                                         });
 
                                         Sleep();
@@ -332,10 +330,20 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                 return;
             }
 
+            var playerInternalID = 0;
+            playerInternalID = Player.GetPlayerID(ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3).Trim());
+
+            if (playerInternalID == 0)
+            {
+                MessageBox.Show("Unable to retrieve interal player ID", APPLICATION_NAME);
+                ViewModel.SelectedPlayer = "";
+                return;
+            }
+
             // Validation complete. Player can be added
             ViewModel.SearchPlayers.Add(new Models.Search
             {
-                ID = Player.GetPlayerID(ViewModel.SelectedPlayer),
+                ID = playerInternalID,
                 Name = ViewModel.SelectedPlayer
             });
 
@@ -358,6 +366,11 @@ namespace FIFA20_Ultimate_Team_Autobuyer
         private void Window_Activated(object sender, EventArgs e)
         {
             txtSessionID.Focus();
+        }
+
+        private void cboPlayer_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            cboPlayer.IsDropDownOpen = true;
         }
     }
 }

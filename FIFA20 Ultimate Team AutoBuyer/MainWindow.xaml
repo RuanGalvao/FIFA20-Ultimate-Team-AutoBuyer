@@ -31,7 +31,7 @@
 
                 <!--Players-->
                 <ComboBox Name="cboPlayer" VerticalContentAlignment="Center" Text="{Binding SelectedPlayer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Left" ItemsSource="{Binding Players}" 
-                          IsEditable="True" IsTextSearchEnabled="True" Margin="0,120,0,0" VerticalAlignment="Top" Width="175" Height="30"/>
+                          IsEditable="True" IsTextSearchEnabled="False" Margin="0,120,0,0" VerticalAlignment="Top" Width="175" Height="30" KeyDown="cboPlayer_KeyDown" />
                 <ListView x:Name="listViewPlayers" ItemsSource="{Binding SearchPlayers}" DisplayMemberPath="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,35,0,0" Width="365" Height="80"/>
                 <Button x:Name="btnAdd" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Add" Margin="180,120,0,0" Width="90" HorizontalAlignment="Left" 
                         VerticalAlignment="Top" Height="30" Click="btnAdd_Click"/>
@@ -42,7 +42,13 @@
                 <DataGrid HorizontalAlignment="Left" GridLinesVisibility="None" AutoGenerateColumns="False" RowHeaderWidth="0" BorderThickness="1"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True"  ColumnWidth="*" ItemsSource="{Binding Log}" Height="100" Margin="0,330,-1,0" VerticalAlignment="Top" Width="365">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Time" Width="60" Binding="{Binding time}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Message" Binding="{Binding message}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Message" Binding="{Binding message}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
 
