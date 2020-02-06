@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FIFA20_Ultimate_Team_Autobuyer.Properties {
+namespace FIFA20_Ultimate_Team_AutoBuyer.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FIFA20_Ultimate_Team_Autobuyer.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FIFA20_Ultimate_Team_AutoBuyer.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
