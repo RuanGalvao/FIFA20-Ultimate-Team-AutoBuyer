@@ -331,7 +331,9 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             }
 
             var playerInternalID = 0;
-            playerInternalID = Player.GetPlayerID(ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3).Trim());
+            playerInternalID = Player.GetPlayerID(
+                ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3).Trim(), 
+                Convert.ToInt32(ViewModel.SelectedPlayer.Substring(ViewModel.SelectedPlayer.Length -2, 2)));
 
             if (playerInternalID == 0)
             {

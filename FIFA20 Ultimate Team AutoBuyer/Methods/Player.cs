@@ -38,6 +38,11 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
         {
             return allPlayers.Where(player => string.Equals(player.Name, playerName, StringComparison.OrdinalIgnoreCase)).Select(player => player.ID).FirstOrDefault();
         }
+
+        public static int GetPlayerID(string playerName, int rating)
+        { 
+            return allPlayers.Where(player => player.Rating == rating && string.Equals(player.Name, playerName, StringComparison.OrdinalIgnoreCase)).Select(player => player.ID).FirstOrDefault();
+        }
             
         public static string GetPlayerName(int playerID)
         {
