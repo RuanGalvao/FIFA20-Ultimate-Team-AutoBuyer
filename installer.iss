@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "FIFA20 Ultimate Team AutoBuyer"
-#define MyAppVersion "2.0"
+#define MyAppVersion "1.0"
 #define MyAppExeName "FIFA20 Ultimate Team AutoBuyer.exe"
 
 [Setup]
