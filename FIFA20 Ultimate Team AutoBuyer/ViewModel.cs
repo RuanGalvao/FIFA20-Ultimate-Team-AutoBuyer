@@ -12,16 +12,16 @@ namespace FIFA20_Ultimate_Team_Autobuyer
 
         public List<string> Players { get => 
                 AllPlayers
-                .OrderByDescending(x => x.r)
-                .Select(x => string.IsNullOrEmpty(x.c) ? $"{x.f} {x.l} {x.r}" : $"{x.c} {x.r}")
+                .OrderByDescending(x => x.Rating)
+                .Select(player => $"{player.Name} {player.Rating}")
                 .Where(x => x.IndexOf(SelectedPlayer, 0, StringComparison.InvariantCultureIgnoreCase) != -1 && SelectedPlayer.Length > 0)
                 .Take(5)
                 .ToList(); 
         }
 
-        public List<Models.Player.PlayerModel> AllPlayers { get => Methods.Player.ReturnAllPlayers(); }
+        public List<Models.InternalPlayer> AllPlayers { get => Methods.Player.ReturnAllPlayers(); }
         public ObservableCollection<Models.Log> Log { get; set; } = new ObservableCollection<Models.Log>();
-        public ObservableCollection<Models.Search> SearchPlayers { get; set; } = new ObservableCollection<Models.Search>();
+        public ObservableCollection<Models.InternalPlayer> SearchPlayers { get; set; } = new ObservableCollection<Models.InternalPlayer>();
         public List<string> SellPriceBin { get => new List<string> { "Low", "Medium", "High", "Automatic" }; }
         public string SelectedPlayer { get; set; } = "";
         public string SelectedSellPrice { get; set; } = "Low";

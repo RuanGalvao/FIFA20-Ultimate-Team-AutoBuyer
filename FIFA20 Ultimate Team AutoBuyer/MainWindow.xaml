@@ -32,7 +32,7 @@
                 <!--Players-->
                 <ComboBox Name="cboPlayer" VerticalContentAlignment="Center" Text="{Binding SelectedPlayer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Left" ItemsSource="{Binding Players}" 
                           IsEditable="True" IsTextSearchEnabled="False" Margin="0,120,0,0" VerticalAlignment="Top" Width="175" Height="30" KeyDown="cboPlayer_KeyDown" />
-                <ListView x:Name="listViewPlayers" ItemsSource="{Binding SearchPlayers}" DisplayMemberPath="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,35,0,0" Width="365" Height="80"/>
+                <ListView x:Name="listViewPlayers" ItemsSource="{Binding SearchPlayers}" DisplayMemberPath="NameRating" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,35,0,0" Width="365" Height="80"/>
                 <Button x:Name="btnAdd" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Add" Margin="180,120,0,0" Width="90" HorizontalAlignment="Left" 
                         VerticalAlignment="Top" Height="30" Click="btnAdd_Click"/>
                 <Button x:Name="btnRemove" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Remove" Margin="275,120,0,0" Width="90" Height="30" 
@@ -41,8 +41,8 @@
                 <!--Grid-->
                 <DataGrid HorizontalAlignment="Left" GridLinesVisibility="None" AutoGenerateColumns="False" RowHeaderWidth="0" BorderThickness="1"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True"  ColumnWidth="*" ItemsSource="{Binding Log}" Height="100" Margin="0,330,-1,0" VerticalAlignment="Top" Width="365">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Time" Width="60" Binding="{Binding time}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Message" Binding="{Binding message}">
+                        <DataGridTextColumn Header="Time" Width="60" Binding="{Binding Time}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Message" Binding="{Binding Message}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style>
                                     <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
@@ -67,6 +67,7 @@
                 <ComboBox Name="cboSellPrice" SelectedIndex="0" VerticalContentAlignment="Center" Text="{Binding SelectedSellPrice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                           HorizontalAlignment="Left" ItemsSource="{Binding SellPriceBin}" Margin="115,5,0,0" VerticalAlignment="Top" Width="250" Height="38"/>
             </Grid>
+            
         </TabItem>
     </TabControl>
 </Window>

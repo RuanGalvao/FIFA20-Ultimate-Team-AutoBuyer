@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FIFA20_Ultimate_Team_Autobuyer.Models
 {
-    public class Player
+    public class NetworkPlayer
     {
 
         public IEnumerable<PlayerModel> LegendsPlayers;

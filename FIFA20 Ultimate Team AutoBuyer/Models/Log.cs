@@ -8,7 +8,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Models
 {
     public class Log
     {
-        public string time { get; set; }
-        public string message { get; set; }
+        public string Time { get; set; }
+        public string Message { get; set; }
     }
 }

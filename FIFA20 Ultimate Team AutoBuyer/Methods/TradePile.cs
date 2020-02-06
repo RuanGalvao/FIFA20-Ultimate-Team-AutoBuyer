@@ -24,7 +24,6 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
             total += items.Where(i => i.Expires == -1 && i.CurrentBid == 0).Sum(item => item.BuyNowPrice);
 
             //Unlisted items
-            //total += items.Where(i => i.Expires == 0).Sum(item => new Search().GetPlayerSellingPriceAsync(item.ItemData.AssetId, sessionID).Result);
             total += (await Task.WhenAll(items.Where(i => i.Expires == 0).Select(i => new Search().GetPlayerSellingPriceAsync(i.ItemData.AssetId, sessionID)).ToArray())).Sum();
 
             return (int) (total * 0.95);

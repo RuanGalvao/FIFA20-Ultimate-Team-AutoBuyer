@@ -34,9 +34,9 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             var playerIndex = 0;
             var errorCount = 0;
             var sessionID = "";
-            var sellPriceBin = "Automatic";
+            var sellPriceBin = "";
 
-            var players = new List<Models.Search>();
+            var players = new List<Models.InternalPlayer>();
 
             var tradePile = new TradePile();
 
@@ -101,7 +101,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                                 currentPlayer.SearchPrice = await new Search().GetPlayerSellingPriceAsync(currentPlayer.ID, sessionID);
                                 currentPlayer.SearchPrice = CalculateBid.CalculatePreviousBid(currentPlayer.SearchPrice);
                                 UpdatePlayerObject("SearchPrice", currentPlayer.SearchPrice.ToString(), (playerIndex - 1) % players.Count);
-                                AddToLog($"Searching for {currentPlayer.Name} at {currentPlayer.SearchPrice}");
+                                AddToLog($"Searching for {currentPlayer.NameRating} at {currentPlayer.SearchPrice}");
                                 Sleep();
                             }
 
@@ -116,17 +116,17 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                             {
                                 // Unable to find listings. Increase price
                                 UpdatePlayerObject("SearchPrice", CalculateBid.CalculateNextBid(currentPlayer.SearchPrice).ToString(), (playerIndex - 1) % players.Count);
-                                AddToLog($"Increasing price for {currentPlayer.Name} {currentPlayer.Rating} to {currentPlayer.SearchPrice}");
+                                AddToLog($"Increasing price for {currentPlayer.NameRating} to {currentPlayer.SearchPrice}");
                             }
                             else if (playerData.auctionInfo.Count() > 10)
                             {
                                 // Too many listings found. Reduce price
                                 UpdatePlayerObject("SearchPrice", CalculateBid.CalculatePreviousBid(currentPlayer.SearchPrice).ToString(), (playerIndex - 1) % players.Count);
-                                AddToLog($"Decreasing price for {currentPlayer.Name} {currentPlayer.Rating} to {currentPlayer.SearchPrice}");
+                                AddToLog($"Decreasing price for {currentPlayer.NameRating} to {currentPlayer.SearchPrice}");
                             }
                             else
                             {
-                                //We have some listings to work with
+                                // We have some listings to work with
                                 var items = playerData.auctionInfo.Where(p => p.BuyNowPrice < currentPlayer.SearchPrice * 0.95 - CalculateBid.CalculateMinProfitMargin(currentPlayer.SearchPrice));
                                 
                                 var broughtItems = new List<long>();
@@ -136,7 +136,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                                     var buy = new Buy();
                                     if (await buy.PlayerAsync(item.TradeId, item.BuyNowPrice, sessionID))
                                     {
-                                        AddToLog($"{Player.GetPlayerName(currentPlayer.ID)} brought for {item.BuyNowPrice}");
+                                        AddToLog($"{currentPlayer.NameRating} brought for {item.BuyNowPrice}");
 
                                         var relistPrice = sell.CalculatePrice(currentPlayer.SearchPrice, sellPriceBin, currentCredits);
                                         Dispatcher.Invoke(() =>
@@ -177,7 +177,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                                     var soldItems = tradePileData?.auctionInfo.Where(s => s.Expires == -1 && s.CurrentBid != 0);
                                     foreach (var item in soldItems)
                                     {
-                                        AddToLog($"{Player.GetPlayerName(item.ItemData.AssetId)} sold for {item.CurrentBid}");
+                                        AddToLog($"{Player.GetPlayerName(item.ItemData.AssetId)} {Player.GetPlayerRating(item.ItemData.AssetId)} sold for {item.CurrentBid}");
                                         Sleep();
                                         await tradePile.DeleteAsync(item.TradeId, sessionID);
                                     }
@@ -269,8 +269,8 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             Dispatcher.Invoke(() =>
             {
                 ViewModel.Log.Insert(0, new Models.Log { 
-                    time = DateTime.Now.ToLongTimeString(),
-                    message = message 
+                    Time = DateTime.Now.ToLongTimeString(),
+                    Message = message 
                 });
             });
         }
@@ -323,7 +323,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             }
 
             // Check if the player exists in the dropdown
-            if (!ViewModel.Players.Any(x => x.Contains(ViewModel.SelectedPlayer)))
+            if (!ViewModel.Players.Any(list => list.Contains(ViewModel.SelectedPlayer)))
             {
                 MessageBox.Show("Invalid player entered", APPLICATION_NAME);
                 ViewModel.SelectedPlayer = "";
@@ -341,7 +341,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             }
 
             // Validation complete. Player can be added
-            ViewModel.SearchPlayers.Add(new Models.Search
+            ViewModel.SearchPlayers.Add(new Models.InternalPlayer
             {
                 ID = playerInternalID,
                 Name = ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3),
@@ -361,7 +361,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             }
 
             // Validation complete. Player can be removed from the list
-            ViewModel.SearchPlayers.Remove((Models.Search)listViewPlayers.SelectedItem);
+            ViewModel.SearchPlayers.Remove((Models.InternalPlayer)listViewPlayers.SelectedItem);
         }
 
         private void Window_Activated(object sender, EventArgs e)
