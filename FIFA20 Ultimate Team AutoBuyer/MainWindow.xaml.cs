@@ -335,7 +335,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
 
             if (playerInternalID == 0)
             {
-                MessageBox.Show("Unable to retrieve interal player ID", APPLICATION_NAME);
+                MessageBox.Show("Unable to retrieve internal player ID", APPLICATION_NAME);
                 ViewModel.SelectedPlayer = "";
                 return;
             }
@@ -344,7 +344,8 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             ViewModel.SearchPlayers.Add(new Models.Search
             {
                 ID = playerInternalID,
-                Name = ViewModel.SelectedPlayer
+                Name = ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3),
+                Rating = Convert.ToInt32(ViewModel.SelectedPlayer.Substring(ViewModel.SelectedPlayer.Length - 2, 2))
             });
 
             ViewModel.SelectedPlayer = "";
