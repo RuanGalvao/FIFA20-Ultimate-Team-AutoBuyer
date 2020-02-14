@@ -43,8 +43,8 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Models
         public ushort Loans { get; set; }
         public List<Attribute> LifeTimeStats { get; set; }
         public byte LoyaltyBonus { get; set; }
-        public uint MarketDataMaxPrice { get; set; }
-        public uint MarketDataMinPrice { get; set; }
+        public int MarketDataMaxPrice { get; set; }
+        public int MarketDataMinPrice { get; set; }
         public byte Morale { get; set; }
         public byte Owners { get; set; }
         public string PreferredPosition { get; set; }

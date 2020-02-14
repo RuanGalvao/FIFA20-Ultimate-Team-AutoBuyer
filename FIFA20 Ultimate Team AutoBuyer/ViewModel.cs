@@ -35,5 +35,15 @@ namespace FIFA20_Ultimate_Team_Autobuyer
         public string ConnectButton { get => IsConnected ? "Stop" : "Start"; }
         public string StartButtonColour { get => !IsConnected && StartingCredits != 0 ? "OrangeRed" : "ForestGreen" ; }
         public bool EnableFields { get => !IsConnected; }
+
+
+        public string PlayerMinPrice { get; set; }
+        public string PlayerMaxPrice { get; set; }
+
+        public string PlayerRating { get; set; }
+        public bool PlayerIsSpecial { get; set; } = false;
+        public bool EnableAdvanced { get => PlayerIsSpecial; }
+
+        public bool EnableSelling { get; set; } = true;
     }
 }

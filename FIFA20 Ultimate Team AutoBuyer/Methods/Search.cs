@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FIFA20_Ultimate_Team_Autobuyer.Models;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net;
@@ -10,14 +11,14 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
 {
     public class Search
     {
-        internal async Task<string> Player(int playerID, int searchPrice, string sessionID)
+        internal async Task<string> Player(InternalPlayer currentPlayer, string sessionID)
         {
             using (var httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-UT-SID", sessionID);
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("user-agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36");
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
-                var generatedSearchURL = new Search().GeneratePlayerSearchURL(searchPrice, playerID);
+                var generatedSearchURL = new Search().GeneratePlayerSearchURL(currentPlayer);
 
                 var response = await httpClient.GetAsync(generatedSearchURL);
 
@@ -27,7 +28,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
             }
         }
 
-        internal async Task<int> GetPlayerSellingPriceAsync(int playerID, string sessionID)
+        internal async Task<int> GetPlayerSellingPriceAsync(InternalPlayer currentPlayer, string sessionID)
         {
             Thread.Sleep(5000);
 
@@ -36,7 +37,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-UT-SID", sessionID);
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("user-agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36");
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
-                var generatedSearchURL = new Search().GeneratePlayerSearchURL(0, playerID);
+                var generatedSearchURL = new Search().GeneratePlayerSearchURL(currentPlayer);
                 var response = await httpClient.GetAsync(generatedSearchURL);
 
                 if (response.StatusCode != HttpStatusCode.OK) throw new HttpRequestException(Convert.ToInt32(response.StatusCode).ToString());
@@ -45,19 +46,24 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
 
                 var playerData = JsonConvert.DeserializeObject<AuctionInfo>(responseString);
 
-                return playerData.auctionInfo.OrderBy(r => r.BuyNowPrice).First().BuyNowPrice;
+                return playerData.auctionInfo.Where(item => item.ItemData.Rating == currentPlayer.Rating).OrderBy(r => r.BuyNowPrice).First().BuyNowPrice;
             }
         }
 
-        protected string GeneratePlayerSearchURL(int startPrice, int playerID)
+        protected string GeneratePlayerSearchURL(InternalPlayer currentPlayer)
         {
-            var baseSearchURL = $"https://utas.external.s3.fut.ea.com/ut/game/fifa20/transfermarket?start=0&num=21&type=player";
-            var buyNowMinPrice = new Random().Next(6, 13) * 50;
-            var bidPriceMinPrice = new Random().Next(3, (buyNowMinPrice - 50) / 50) * 50;
+            var url = $"https://utas.external.s3.fut.ea.com/ut/game/fifa20/transfermarket?start=0&num=21&type=player&maskedDefId={currentPlayer.ID}";
+            var bidPriceMin = new Random().Next(3, 13) * 50;
+            var bidPriceMax = bidPriceMin + 50;
 
-            if (startPrice == 0) return $"{baseSearchURL}&maskedDefId={playerID}&micr={bidPriceMinPrice}&minb={buyNowMinPrice}";
+            if (currentPlayer.IsSpecial) url += $"&rare=SP";
 
-            return $"{baseSearchURL}&maskedDefId={playerID}&micr={bidPriceMinPrice}&minb={buyNowMinPrice}&maxb={startPrice}";
+            url += $"&micr={bidPriceMin}";
+
+            if (currentPlayer.SearchPrice > 0) return url += $"&macr={CalculateBid.CalculatePreviousBid(currentPlayer.SearchPrice)}&minb={bidPriceMax}&maxb={currentPlayer.SearchPrice}";
+            if (currentPlayer.MaxPrice > 0) return url += $"&macr={CalculateBid.CalculatePreviousBid(currentPlayer.MaxPrice)}&minb={currentPlayer.MinPrice}&maxb={currentPlayer.MaxPrice}";
+
+            return url;
         }
     }
 }
