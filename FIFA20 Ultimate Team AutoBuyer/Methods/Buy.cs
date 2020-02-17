@@ -2,6 +2,7 @@
 using System.Net.Http;
 using ConsoleApp1.Models;
 using System.Threading.Tasks;
+using System;
 
 namespace FIFA20_Ultimate_Team_Autobuyer.Methods
 {
@@ -18,6 +19,8 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
                 var bidObject = new Bid { bid = price.ToString() };
                 var bidObjectSerialised = JsonConvert.SerializeObject(bidObject);
                 var response = await httpClient.PutAsync($"https://utas.external.s3.fut.ea.com/ut/game/fifa20/trade/{tradeID}/bid", new StringContent(bidObjectSerialised));
+
+                if (response.StatusCode.ToString() == "470") throw new Exception(Convert.ToInt32(response.StatusCode).ToString());
 
                 return response.IsSuccessStatusCode;
             }

@@ -16,7 +16,8 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Enums
         UpgradeRequired = 426,
         InternalServerError = 500,
         CaptureRequired = 458,
-        Sold = 461
+        Sold = 461,
+        InsufficentFunds = 470
     }
      
 }

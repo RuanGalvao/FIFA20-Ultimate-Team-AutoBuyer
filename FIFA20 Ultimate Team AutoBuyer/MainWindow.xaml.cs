@@ -19,6 +19,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
         public ViewModel ViewModel => (ViewModel)DataContext;
 
         private DateTime nextRunTime;
+        private TimeSpan addDelay;
 
         private readonly string APPLICATION_NAME = "FIFA20 Ultimate Team AutoBuyer";
 
@@ -31,6 +32,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             DataContext = new ViewModel();
 
             nextRunTime = DateTime.Now;
+            addDelay = new TimeSpan(0, 0, 0);
 
             var startingCredits = 0;
             var currentCredits = 0;
@@ -205,7 +207,9 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                         { 
                             HandleError(ex, ref errorCount);
                         }
-                        nextRunTime = DateTime.Now + new TimeSpan(0, 0, 5);
+
+                        nextRunTime = DateTime.Now + new TimeSpan(0, 0, 5) + addDelay;
+                        addDelay = new TimeSpan(0, 0, 0);
 
                         if (!isConnected)
                         {
@@ -223,6 +227,10 @@ namespace FIFA20_Ultimate_Team_Autobuyer
 
             switch (value)
             {
+                case FIFAUltimateTeamStatusCode.InsufficentFunds:
+                    AddToLog("Insufficient Funds");
+                    addDelay = new TimeSpan(0, 1, 0);
+                    break;
                 case FIFAUltimateTeamStatusCode.CaptureRequired:
                     MessageBox.Show("Please complete the CAPTCHA on the Web App and re-enter the Session ID", APPLICATION_NAME);
                     Dispatcher.Invoke(() => { ViewModel.SessionID = ""; });
@@ -243,7 +251,6 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                 default:
                     if (ex.Message.Contains("One or more errors occurred.")) break; // This is probably due to a time-out
                     errorCount++;
-
                     if (ex.Message.Contains("Unable to find player"))
                     {
                         Dispatcher.Invoke(() => { MessageBox.Show("Unable to find Player. Please check filters and re-try", APPLICATION_NAME); });
