@@ -31,6 +31,8 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             InitializeComponent();
             DataContext = new ViewModel();
 
+            Title = APPLICATION_NAME;
+
             nextRunTime = DateTime.Now;
             addDelay = new TimeSpan(0, 0, 0);
 
@@ -121,15 +123,24 @@ namespace FIFA20_Ultimate_Team_Autobuyer
 
                             if (playerData.auctionInfo.Count() == 0)
                             {
-                                // Unable to find listings. Increase price
-                                UpdatePlayerObject("SearchPrice", CalculateBid.CalculateNextBid(currentPlayer.SearchPrice).ToString(), (playerIndex - 1) % players.Count);
-                                AddToLog($"Increasing price for {currentPlayer.NameRating} to {currentPlayer.SearchPrice}");
+                                // Unable to find listings. Increase price if less than max price
+                                var nextSearchPrice = CalculateBid.CalculateNextBid(currentPlayer.SearchPrice);
+                                if (nextSearchPrice < currentPlayer.MaxPrice)
+                                {
+                                    UpdatePlayerObject("SearchPrice", CalculateBid.CalculateNextBid(currentPlayer.SearchPrice).ToString(), (playerIndex - 1) % players.Count);
+                                    AddToLog($"Increasing price for {currentPlayer.NameRating} to {currentPlayer.SearchPrice}");
+                                }
                             }
                             else if (playerData.auctionInfo.Count() > 10)
                             {
-                                // Too many listings found. Reduce price
-                                UpdatePlayerObject("SearchPrice", CalculateBid.CalculatePreviousBid(currentPlayer.SearchPrice).ToString(), (playerIndex - 1) % players.Count);
-                                AddToLog($"Decreasing price for {currentPlayer.NameRating} to {currentPlayer.SearchPrice}");
+                                // Too many listings found. Reduce price if greater than min price
+                                var nextSearchPrice = CalculateBid.CalculatePreviousBid(currentPlayer.SearchPrice);
+                                if (nextSearchPrice > currentPlayer.MinPrice)
+                                {
+                                    UpdatePlayerObject("SearchPrice", CalculateBid.CalculatePreviousBid(currentPlayer.SearchPrice).ToString(), (playerIndex - 1) % players.Count);
+                                    AddToLog($"Decreasing price for {currentPlayer.NameRating} to {currentPlayer.SearchPrice}");
+                                }
+
                             }
                             else
                             {

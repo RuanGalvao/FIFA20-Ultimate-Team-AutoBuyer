@@ -54,15 +54,23 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
         {
             var url = $"https://utas.external.s3.fut.ea.com/ut/game/fifa20/transfermarket?start=0&num=21&type=player&maskedDefId={currentPlayer.ID}";
             var bidPriceMin = new Random().Next(3, 13) * 50;
-            var bidPriceMax = bidPriceMin + 50;
 
             if (currentPlayer.IsSpecial) url += $"&rare=SP";
 
             url += $"&micr={bidPriceMin}";
 
-            if (currentPlayer.SearchPrice > 0) return url += $"&macr={CalculateBid.CalculatePreviousBid(currentPlayer.SearchPrice)}&minb={bidPriceMax}&maxb={currentPlayer.SearchPrice}";
+            if (currentPlayer.SearchPrice > 0)
+            {
+                url += $"&macr={CalculateBid.CalculatePreviousBid(currentPlayer.SearchPrice)}";
+                if (currentPlayer.MinPrice > 0) url += $"&minb={currentPlayer.MinPrice}";
+                url += $"&maxb={currentPlayer.SearchPrice}";
+                return url;
+            }
+            
+            //In-form card first search
             if (currentPlayer.MaxPrice > 0) return url += $"&macr={CalculateBid.CalculatePreviousBid(currentPlayer.MaxPrice)}&minb={currentPlayer.MinPrice}&maxb={currentPlayer.MaxPrice}";
 
+            //Non in-form first search
             return url;
         }
     }
