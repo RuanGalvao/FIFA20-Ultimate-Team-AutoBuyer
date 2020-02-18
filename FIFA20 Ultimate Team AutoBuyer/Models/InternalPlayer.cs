@@ -14,10 +14,6 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Models
         public int MaxPrice { get; set; }
 
         public string NameRating => $"{Name} {Rating}";
-
-        public string MinPriceString => MinPrice == 0 ? "" : $"Min Price: {MinPrice}";
-        public string MaxPriceString => MaxPrice == 0 ? "" : $"Max Price: {MaxPrice}";
-
-        public string LogMessage => $"{NameRating} {MinPriceString} {MaxPriceString}";
+        public string MinMaxPrice => $"{MinPrice}-{MaxPrice}";
     }
 }

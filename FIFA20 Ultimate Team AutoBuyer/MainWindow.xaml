@@ -17,7 +17,23 @@
 
                 <!--Players-->
                 <Separator HorizontalAlignment="Left" Height="10" Margin="0,32,0,0" VerticalAlignment="Top" Width="365"/>
-                <ListView x:Name="listViewPlayers" ItemsSource="{Binding SearchPlayers}" DisplayMemberPath="LogMessage" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,45,0,0" Width="365" Height="80"/>
+                <!--<ListView x:Name="listViewPlayers" ItemsSource="{Binding SearchPlayers}" DisplayMemberPath="LogMessage" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,45,0,0" Width="365" Height="80"/>-->
+                <DataGrid x:Name="DataGridPlayers" HorizontalAlignment="Left" GridLinesVisibility="None" AutoGenerateColumns="False" RowHeaderWidth="0" BorderThickness="1"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True"  ColumnWidth="*" 
+                          ItemsSource="{Binding SearchPlayers}" Height="80" Margin="0,45,-1,0" VerticalAlignment="Top" Width="365">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Width="165" Binding="{Binding Name}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Special" Width="50" Binding="{Binding IsSpecial}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Rating" Width="50" Binding="{Binding Rating}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Price" Binding="{Binding MinMaxPrice}"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                
                 
                 <Label x:Name="lblSearchPrice" Content="Price:" Margin="80, 130,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="50"/>
                 <TextBox PreviewTextInput="NumberValidationTextBox" BorderThickness="1" Text="{Binding PlayerMinPrice}" IsEnabled="{Binding EnableAdvanced}" x:Name="txtMinPrice" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="130,130,0,0" VerticalAlignment="Top" Width="50" 
@@ -27,7 +43,7 @@
                 
                 <Label x:Name="lblRating" Content="Rating:" Margin="265, 130,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="50"/>
                 <TextBox Text="{Binding PlayerRating}" PreviewTextInput="NumberValidationTextBox" BorderThickness="1" IsEnabled="{Binding EnableAdvanced}" x:Name="txtRating" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="315,130,0,0" VerticalAlignment="Top" Width="50" 
-                          Height="30" BorderBrush="#FFACACAC"/>
+                          Height="30" BorderBrush="#FFACACAC" LostFocus="txtRating_LostFocus"/>
 
                 <ComboBox Name="cboPlayer" VerticalContentAlignment="Center" Text="{Binding SelectedPlayer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Left" ItemsSource="{Binding Players}" 
                           IsEditable="True" IsTextSearchEnabled="False" Margin="0,165,0,0" VerticalAlignment="Top" Width="175" Height="30" KeyDown="cboPlayer_KeyDown" />

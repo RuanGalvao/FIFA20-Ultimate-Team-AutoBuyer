@@ -98,7 +98,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                                 {
                                     ViewModel.IsConnected = true;
                                     ViewModel.Assets = assetsTotalValue;
-                                    ViewModel.StartingCredits = startingCredits + assetsTotalValue;
+                                    if (ViewModel.StartingCredits == 0) ViewModel.StartingCredits = startingCredits + assetsTotalValue;
                                     ViewModel.CurrentCredits = startingCredits;
                                     ViewModel.Total = startingCredits + assetsTotalValue;
                                 });
@@ -345,15 +345,15 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             if (!AllowPlayerAdd()) return;
 
             // Validation complete. Player can be added
-            ViewModel.SearchPlayers.Add(new Models.InternalPlayer
+            ViewModel.SearchPlayers.Add(new InternalPlayer
             {
                 ID = Player.GetPlayerID(
                     ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3).Trim(),
                     Convert.ToInt32(ViewModel.SelectedPlayer.Substring(ViewModel.SelectedPlayer.Length - 2, 2))),
                 Name = ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3),
                 Rating = ViewModel.PlayerIsSpecial ? Convert.ToInt32(ViewModel.PlayerRating) : Convert.ToInt32(ViewModel.SelectedPlayer.Substring(ViewModel.SelectedPlayer.Length - 2, 2)),
-                MinPrice = ViewModel.PlayerMinPrice == "" ? 0 : Convert.ToInt32(ViewModel.PlayerMinPrice),
-                MaxPrice = ViewModel.PlayerMaxPrice == "" ? 0 : Convert.ToInt32(ViewModel.PlayerMaxPrice),
+                MinPrice = ViewModel.PlayerIsSpecial ? Convert.ToInt32(ViewModel.PlayerMinPrice) : 0,
+                MaxPrice = ViewModel.PlayerIsSpecial ? Convert.ToInt32(ViewModel.PlayerMaxPrice) : 0,
                 IsSpecial = ViewModel.PlayerIsSpecial
             });
 
@@ -374,7 +374,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             }
 
             // Validation complete. Player can be removed from the list
-            ViewModel.SearchPlayers.Remove((Models.InternalPlayer)listViewPlayers.SelectedItem);
+            ViewModel.SearchPlayers.Remove((Models.InternalPlayer)DataGridPlayers.SelectedItem);
         }
 
         private void Window_Activated(object sender, EventArgs e)
@@ -486,6 +486,14 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             var value = Convert.ToInt32(txtMaxPrice.Text);
             value -= value % CalculateBid.CalculateMinProfitMargin(value);
             txtMaxPrice.Text = value < 700 ? "700" : Convert.ToString(value);
+        }
+
+        private void txtRating_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Convert.ToInt32(txtRating.Text) > 99)
+            {
+                txtRating.Text = "99";
+            }
         }
     }
 }
