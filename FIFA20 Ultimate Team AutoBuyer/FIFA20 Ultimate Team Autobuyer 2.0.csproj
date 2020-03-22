@@ -93,9 +93,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\InternalPlayer.cs" />
+    <Compile Include="Methods\ChemistryStyle.cs" />
+    <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Unassigned.cs" />
+    <Compile Include="General\Utils.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

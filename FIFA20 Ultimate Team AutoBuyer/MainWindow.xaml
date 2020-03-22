@@ -7,55 +7,137 @@
         Title="FIFA20 Ultimate Team Autobuyer" Height="610" Width="400" ResizeMode="CanMinimize" Activated="Window_Activated">
 
     <TabControl HorizontalAlignment="Left" Height="580" VerticalAlignment="Top" Width="383">
-        <TabItem Header="Search" >
+        
+        <TabItem Header="Login">
             <Grid HorizontalAlignment="Left" Height="580" Margin="5,5,-6,0" VerticalAlignment="Top" Width="365" >
-
                 <!--Session-->
                 <Label Content="Session ID:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="110" BorderThickness="0" Height="30" BorderBrush="#FFACACAC"/>
                 <TextBox BorderThickness="1" x:Name="txtSessionID" IsEnabled="{Binding EnableFields}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Text="{Binding SessionID}" Margin="115,0,0,0" VerticalAlignment="Top" Width="250" 
-                          Height="30" BorderBrush="#FFACACAC"/>
+                              Height="30" BorderBrush="#FFACACAC"/>
+            </Grid>
+        </TabItem>
+        
+        <TabItem Header="Filters">
+            <Grid HorizontalAlignment="Left" Height="580" Margin="5,5,-6,0" VerticalAlignment="Top" Width="365" >
 
-                <!--Players-->
-                <Separator HorizontalAlignment="Left" Height="10" Margin="0,32,0,0" VerticalAlignment="Top" Width="365"/>
-                <!--<ListView x:Name="listViewPlayers" ItemsSource="{Binding SearchPlayers}" DisplayMemberPath="LogMessage" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,45,0,0" Width="365" Height="80"/>-->
-                <DataGrid x:Name="DataGridPlayers" HorizontalAlignment="Left" GridLinesVisibility="None" AutoGenerateColumns="False" RowHeaderWidth="0" BorderThickness="1"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True"  ColumnWidth="*" 
-                          ItemsSource="{Binding SearchPlayers}" Height="80" Margin="0,45,-1,0" VerticalAlignment="Top" Width="365">
+                <DataGrid x:Name="DataGridPlayers1" HorizontalAlignment="Left" GridLinesVisibility="None" AutoGenerateColumns="False" RowHeaderWidth="0" BorderThickness="1"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True"
+                          ItemsSource="{Binding SearchFilters}" Height="120" Margin="0,0,0,0" VerticalAlignment="Top" Width="365">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name" Width="165" Binding="{Binding Name}">
+                        <DataGridTextColumn Header="Type" Width="100" Binding="{Binding Type}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Name" Width="100" Binding="{Binding GetPlayerName}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style>
                                     <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header="Special" Width="50" Binding="{Binding IsSpecial}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Rating" Width="50" Binding="{Binding Rating}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Price" Binding="{Binding MinMaxPrice}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Position" Width="100" Binding="{Binding GetPosition}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Quality" Width="100" Binding="{Binding GetQuality}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Chemistry Style" Width="100" Binding="{Binding GetChemistryStyle}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Rating" Width="50" Binding="{Binding GetRating}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Min Price" Width="50" Binding="{Binding GetMinPrice}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Max Price" Width="50" Binding="{Binding GetMaxPrice}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Sell Item" Width="50" Binding="{Binding SellItem}"></DataGridTextColumn>
+                        
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Type -->
+                <Label x:Name="lblType" Content="Type:" Margin="0, 130,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30"/>
+                <ComboBox Name="cboType" VerticalContentAlignment="Center" SelectedIndex="0" Text="{Binding SelectedType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                          HorizontalAlignment="Left" ItemsSource="{Binding Types}" IsEditable="False" IsTextSearchEnabled="False" Margin="115,130,0,0" 
+                          VerticalAlignment="Top" Width="250" Height="30" KeyDown="cboPlayer_KeyDown" />
+
+                <!-- Players -->
+                <Label x:Name="lblPlayer" Content="Player Name:" Margin="0,165,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                <ComboBox Name="cboPlayer" VerticalContentAlignment="Center" Text="{Binding SelectedPlayer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                          HorizontalAlignment="Left" ItemsSource="{Binding Players}" IsEditable="True" IsTextSearchEnabled="False" Margin="115,165,0,0" 
+                          VerticalAlignment="Top" Width="250" Height="30" KeyDown="cboPlayer_KeyDown" IsEnabled="{Binding DisableChemistryStyleFields}" />
+                
+                <!-- Position -->
+                <Label x:Name="lblPosition" Content="Position:" Margin="0,200,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                <ComboBox Name="cboPosition" VerticalContentAlignment="Center" Text="{Binding SelectedPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                          HorizontalAlignment="Left" ItemsSource="{Binding Positions}" IsEditable="False" IsTextSearchEnabled="False" Margin="115,200,0,0"
+                          VerticalAlignment="Top" Width="250" Height="30" IsEnabled="{Binding DisableChemistryStyleFields}"></ComboBox>
+
+                <!-- Quality -->
+                <Label x:Name="lblQuality" Content="Quality:" Margin="0, 235,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="50"/>
+                <ComboBox Name="cboQuality" VerticalContentAlignment="Center" Text="{Binding SelectedQuality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                          HorizontalAlignment="Left" ItemsSource="{Binding Qualities}" IsEditable="False" IsTextSearchEnabled="False" Margin="115,235,0,0"
+                          VerticalAlignment="Top" Width="250" Height="30" IsEnabled="{Binding DisableChemistryStyleFields}"></ComboBox>
+                
+                <!-- Chemistry Style -->
+                <Label x:Name="lblChemistryStyle" Content="Chemistry Style:" Margin="0, 270,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30"/>
+                <ComboBox Name="cboChemistryStyle" VerticalContentAlignment="Center" Text="{Binding SelectedChemistryStyle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                          HorizontalAlignment="Left" ItemsSource="{Binding ChemistryStyles}" IsEditable="False" IsTextSearchEnabled="False" Margin="115,270,0,0"
+                          VerticalAlignment="Top" Width="250" Height="30"></ComboBox>
+
+                <!-- Rating -->
+                <Label x:Name="lblRating" Content="Rating:" Margin="0, 305,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30"/>
+                <TextBox Text="{Binding PlayerRating}" PreviewTextInput="NumberValidationTextBox" BorderThickness="1"
+                         x:Name="txtRating" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="115,305,0,0" VerticalAlignment="Top" Width="250" 
+                          Height="30" BorderBrush="#FFACACAC" LostFocus="txtRating_LostFocus" IsEnabled="{Binding DisableChemistryStyleFields}"/>
+
+
+                <!-- Min Price -->
+                <Label x:Name="lblMinPrice" Content="Min Price:" Margin="0, 340,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30"/>
+                <TextBox PreviewTextInput="NumberValidationTextBox" BorderThickness="1" Text="{Binding PlayerMinPrice}"
+                         x:Name="txtMinPrice" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="115,340,0,0" VerticalAlignment="Top" Width="250" 
+                         Height="30" BorderBrush="#FFACACAC" LostFocus="txtMinPrice_LostFocus"/>
+
+                <!-- Max Price -->
+                <Label x:Name="lblMaxPrice" Content="Max Price:" Margin="0, 375,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30"/>
+                <TextBox PreviewTextInput="NumberValidationTextBox" BorderThickness="1" Text="{Binding PlayerMaxPrice}"
+                         x:Name="txtMaxPrice" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="115,375,0,0" VerticalAlignment="Top" Width="250" 
+                          Height="30" BorderBrush="#FFACACAC" LostFocus="txtMaxPrice_LostFocus"/>
+
+                <!-- Sell Item -->
+                <Label x:Name="lblSellItem" Content="Sell Item:" Margin="0, 410,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30"/>
+                <ComboBox Name="cboSellItem" VerticalContentAlignment="Center" Text="{Binding SelectedSellItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                          HorizontalAlignment="Left" SelectedIndex="0" ItemsSource="{Binding SellItem}" IsEditable="False" IsTextSearchEnabled="False" Margin="115,410,0,0"
+                          VerticalAlignment="Top" Width="250" Height="30"></ComboBox>
+                
+                <Button x:Name="btnAdd" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Add" Margin="0,495,0,0" 
+                        Width="175" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Click="btnAdd_Click"/>
+                <Button x:Name="btnRemove" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Remove" Margin="185,495,0,0" 
+                        Width="180" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnRemove_Click"/>
+                <!-- <CheckBox IsChecked="{Binding PlayerIsSpecial}" Content="Special" HorizontalAlignment="Left" Height="30" Margin="0,130,0,0" BorderBrush="#FFACACAC" VerticalAlignment="Top" Width="60" VerticalContentAlignment="Center" FlowDirection="RightToLeft" /> -->
+
+            </Grid>
+            
+        </TabItem>
+        <TabItem Header="Search" >
+            <Grid HorizontalAlignment="Left" Height="580" Margin="5,5,-6,0" VerticalAlignment="Top" Width="365" >
+
+                <!--Players-->
+                <!--<ListView x:Name="listViewPlayers" ItemsSource="{Binding SearchFilters}" DisplayMemberPath="LogMessage" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,45,0,0" Width="365" Height="80"/>-->
+                <DataGrid x:Name="DataGridPlayers" HorizontalAlignment="Left" GridLinesVisibility="None" AutoGenerateColumns="False" RowHeaderWidth="0" BorderThickness="1"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True"  ColumnWidth="*" 
+                          ItemsSource="{Binding SearchFilters}" Height="200" Margin="0,0,0,0" VerticalAlignment="Top" Width="365">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Type" Width="100" Binding="{Binding Type}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Name" Width="100" Binding="{Binding GetPlayerName}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Position" Width="100" Binding="{Binding GetPosition}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Quality" Width="100" Binding="{Binding GetQuality}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Chemistry Style" Width="100" Binding="{Binding GetChemistryStyle}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Rating" Width="50" Binding="{Binding GetRating}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Min Price" Width="50" Binding="{Binding GetMinPrice}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Max Price" Width="50" Binding="{Binding GetMaxPrice}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Sell Item" Width="50" Binding="{Binding SellItem}"></DataGridTextColumn>
+
                     </DataGrid.Columns>
                 </DataGrid>
                 
                 
-                <Label x:Name="lblSearchPrice" Content="Price:" Margin="80, 130,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="50"/>
-                <TextBox PreviewTextInput="NumberValidationTextBox" BorderThickness="1" Text="{Binding PlayerMinPrice}" IsEnabled="{Binding EnableAdvanced}" x:Name="txtMinPrice" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="130,130,0,0" VerticalAlignment="Top" Width="50" 
-                          Height="30" BorderBrush="#FFACACAC" LostFocus="txtMinPrice_LostFocus"/>
-                <TextBox PreviewTextInput="NumberValidationTextBox" BorderThickness="1" Text="{Binding PlayerMaxPrice}" IsEnabled="{Binding EnableAdvanced}" x:Name="txtMaxPrice" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="185,130,0,0" VerticalAlignment="Top" Width="50" 
-                          Height="30" BorderBrush="#FFACACAC" LostFocus="txtMaxPrice_LostFocus"/>
                 
-                <Label x:Name="lblRating" Content="Rating:" Margin="265, 130,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="50"/>
-                <TextBox Text="{Binding PlayerRating}" PreviewTextInput="NumberValidationTextBox" BorderThickness="1" IsEnabled="{Binding EnableAdvanced}" x:Name="txtRating" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="315,130,0,0" VerticalAlignment="Top" Width="50" 
-                          Height="30" BorderBrush="#FFACACAC" LostFocus="txtRating_LostFocus"/>
-
-                <ComboBox Name="cboPlayer" VerticalContentAlignment="Center" Text="{Binding SelectedPlayer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Left" ItemsSource="{Binding Players}" 
-                          IsEditable="True" IsTextSearchEnabled="False" Margin="0,165,0,0" VerticalAlignment="Top" Width="175" Height="30" KeyDown="cboPlayer_KeyDown" />
-                <Button x:Name="btnAdd" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Add" Margin="180,165,0,0" Width="90" HorizontalAlignment="Left" 
-                        VerticalAlignment="Top" Height="30" Click="btnAdd_Click"/>
-                <Button x:Name="btnRemove" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Remove" Margin="275,165,0,0" Width="90" Height="30" 
-                        HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnRemove_Click"/>
-                <CheckBox IsChecked="{Binding PlayerIsSpecial}" Content="Special" HorizontalAlignment="Left" Height="30" Margin="0,130,0,0" BorderBrush="#FFACACAC" VerticalAlignment="Top" Width="60" VerticalContentAlignment="Center" FlowDirection="RightToLeft" />
-
+               
 
                 <!--Labels-->
-                <Separator HorizontalAlignment="Left" Height="10" Margin="0,197,0,0" VerticalAlignment="Top" Width="365"/>
                 <Label x:Name="lblStartingCreditsTitle" Content="Starting Credits:" Margin="0, 210,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"/>
                 <Label x:Name="lblStartingCredits"  Content="{Binding StartingCredits, Mode=TwoWay, NotifyOnTargetUpdated=True}" Margin="115,210,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" 
                        Width="250" BorderThickness="1" BorderBrush="#FFACACAC"/>
@@ -103,14 +185,6 @@
                 <ComboBox Name="cboSellPrice" SelectedIndex="0" VerticalContentAlignment="Center" Text="{Binding SelectedSellPrice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                           HorizontalAlignment="Left" ItemsSource="{Binding SellPriceBin}" Margin="115,5,0,0" VerticalAlignment="Top" Width="250" Height="30"/>
                 
-                <!--Selling-->
-                <Label Content="Enable Selling" Margin="5,50,0,0" Height="30" VerticalContentAlignment="Center" Width="110" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
-                <ComboBox Name="cboEnableSelling" SelectedIndex="0" VerticalContentAlignment="Center" Text="{Binding EnableSelling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          HorizontalAlignment="Left" Margin="115,50,0,0" VerticalAlignment="Top" Width="250" Height="30" >
-                    <ComboBoxItem Content="True" IsSelected="True"/>
-                    <ComboBoxItem Content="False" />
-                </ComboBox>
-
             </Grid>
             
         </TabItem>

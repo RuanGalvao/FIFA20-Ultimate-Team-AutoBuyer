@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.Models
+namespace FIFA20_Ultimate_Team_Autobuyer.Methods
 {
     public class Bid
     {

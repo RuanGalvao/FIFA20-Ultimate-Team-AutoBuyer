@@ -11,7 +11,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
 {
     public class TradePile
     {
-        internal async Task<int> CalculateAssetsAsync(IEnumerable<AuctionInfo.ItemModel> items, List<InternalPlayer> players, string sessionID)
+        internal async Task<int> CalculateAssetsAsync(IEnumerable<AuctionInfo.ItemModel> items, List<Filter> players, string sessionID)
         {
             if (items == null) return 0;
 
@@ -24,11 +24,11 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
             total += items.Where(i => i.Expires == -1 && i.CurrentBid == 0).Sum(item => item.BuyNowPrice);
 
             //Unlisted items
-            total += (await Task.WhenAll(
-                items.Where(i => i.Expires == 0 && players.Any(a => a.ID == i.ItemData.AssetId))
-                .Select(i => new Search().GetPlayerSellingPriceAsync(players.Where(x => x.ID == i.ItemData.AssetId).Select(x => x).FirstOrDefault(), sessionID))
-                .ToArray()))
-                .Sum();
+            //total += (await Task.WhenAll(
+            //    items.Where(i => i.Expires == 0 && players.Any(a => a.ID == i.ItemData.AssetId))
+            //    .Select(i => new Search().GetPlayerSellingPriceAsync(players.Where(x => x.ID == i.ItemData.AssetId).Select(x => x).FirstOrDefault(), sessionID))
+            //    .ToArray()))
+            //    .Sum();
 
             return (int) (total * 0.95);
         }

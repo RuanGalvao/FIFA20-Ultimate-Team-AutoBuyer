@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http;
-using ConsoleApp1.Models;
 using System.Threading.Tasks;
 using System;
 
@@ -8,7 +7,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
 {
     public class Buy
     {
-        internal async Task<bool> PlayerAsync(long tradeID, long price, string sessionID)
+        internal async Task<bool> ItemAsync(long tradeID, long price, string sessionID)
         {
             using (var httpClient = new HttpClient())
             {
