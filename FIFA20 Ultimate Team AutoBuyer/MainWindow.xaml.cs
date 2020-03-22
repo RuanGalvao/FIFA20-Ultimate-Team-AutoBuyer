@@ -207,8 +207,16 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                                     var soldItems = tradePileData?.auctionInfo.Where(s => s.Expires == -1 && s.CurrentBid != 0);
                                     foreach (var item in soldItems)
                                     {
-                                        if (currentFilter.Type == CHEMISTRY_STYLE) AddToLog($"{ChemistryStyle.GetName(item.ItemData.CardSubTypeId)} sold for {item.CurrentBid}");
-                                        if (currentFilter.Type == PLAYER) AddToLog($"{Player.GetName(item.ItemData.AssetId)} {Player.GetRating(item.ItemData.AssetId)} sold for {item.CurrentBid}");
+                                        if (item.ItemData.ItemType.ToLower() == "player")
+                                        {
+                                            AddToLog($"{Player.GetName(item.ItemData.AssetId)} {Player.GetRating(item.ItemData.AssetId)} sold for {item.CurrentBid}");
+
+                                        }
+                                        else
+                                        {
+                                            AddToLog($"{ChemistryStyle.GetName(item.ItemData.CardSubTypeId)} sold for {item.CurrentBid}");
+                                                                                    
+                                        }
                                         Sleep();
                                         await tradePile.DeleteAsync(item.TradeId, sessionID);
                                     }
@@ -249,7 +257,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             switch (value)
             {
                 case FIFAUltimateTeamStatusCode.InsufficentFunds:
-                    AddToLog("Insufficient Funds");
+                    AddToLog("Insufficient Funds - Sleeping for 5 mins");
                     addDelay = new TimeSpan(0, 5, 0);
                     break;
                 case FIFAUltimateTeamStatusCode.CaptureRequired:
@@ -393,13 +401,15 @@ namespace FIFA20_Ultimate_Team_Autobuyer
             }
             
             ViewModel.SelectedPlayer = "";
-            ViewModel.SelectedPosition = "";
-            ViewModel.SelectedChemistryStyle = "";
             ViewModel.PlayerMaxPrice = "";
             ViewModel.PlayerMinPrice = "";
             ViewModel.PlayerRating = "";
             ViewModel.PlayerMinPrice = "";
             ViewModel.PlayerMaxPrice = "";
+
+            ViewModel.SelectedIndexChemistryStyle = 0;
+            ViewModel.SelectedIndexPosition = 0;
+            ViewModel.SelectedIndexQuality = 0;
         }
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
@@ -411,8 +421,8 @@ namespace FIFA20_Ultimate_Team_Autobuyer
                 return;
             }
 
-            // Validation complete. Player can be removed from the list
-            ViewModel.SearchFilters.Remove((Models.Filter)DataGridPlayers.SelectedItem);
+            // Validation complete. Filter can be removed from the list
+            ViewModel.SearchFilters.Remove((Models.Filter)DataGridPlayers1.SelectedItem);
         }
 
         private void Window_Activated(object sender, EventArgs e)

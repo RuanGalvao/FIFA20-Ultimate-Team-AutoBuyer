@@ -14,7 +14,12 @@
                 <Label Content="Session ID:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="110" BorderThickness="0" Height="30" BorderBrush="#FFACACAC"/>
                 <TextBox BorderThickness="1" x:Name="txtSessionID" IsEnabled="{Binding EnableFields}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Text="{Binding SessionID}" Margin="115,0,0,0" VerticalAlignment="Top" Width="250" 
                               Height="30" BorderBrush="#FFACACAC"/>
+
+                <Button x:Name="btnStart2" Background="{Binding StartButtonColour}" IsEnabled="{Binding EnableAddButton}" Content="{Binding ConnectButton}" Margin="0,495,0,0" Width="365" VerticalAlignment="top" HorizontalAlignment="Left" Height="38" 
+                        Click="btnStart_Click" BorderBrush="#FFACACAC"/>
             </Grid>
+
+            
         </TabItem>
         
         <TabItem Header="Filters">
@@ -37,8 +42,7 @@
                         <DataGridTextColumn Header="Rating" Width="50" Binding="{Binding GetRating}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Min Price" Width="50" Binding="{Binding GetMinPrice}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Max Price" Width="50" Binding="{Binding GetMaxPrice}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Sell Item" Width="50" Binding="{Binding SellItem}"></DataGridTextColumn>
-                        
+                        <DataGridCheckBoxColumn Header="Sell" Width="30" Binding="{Binding Sell, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></DataGridCheckBoxColumn>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -58,19 +62,21 @@
                 <Label x:Name="lblPosition" Content="Position:" Margin="0,200,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
                 <ComboBox Name="cboPosition" VerticalContentAlignment="Center" Text="{Binding SelectedPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                           HorizontalAlignment="Left" ItemsSource="{Binding Positions}" IsEditable="False" IsTextSearchEnabled="False" Margin="115,200,0,0"
-                          VerticalAlignment="Top" Width="250" Height="30" IsEnabled="{Binding DisableChemistryStyleFields}"></ComboBox>
+                          VerticalAlignment="Top" Width="250" Height="30" IsEnabled="{Binding DisableChemistryStyleFields}"
+                          SelectedIndex="{Binding SelectedIndexPosition}"></ComboBox>
 
                 <!-- Quality -->
                 <Label x:Name="lblQuality" Content="Quality:" Margin="0, 235,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="50"/>
                 <ComboBox Name="cboQuality" VerticalContentAlignment="Center" Text="{Binding SelectedQuality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                           HorizontalAlignment="Left" ItemsSource="{Binding Qualities}" IsEditable="False" IsTextSearchEnabled="False" Margin="115,235,0,0"
-                          VerticalAlignment="Top" Width="250" Height="30" IsEnabled="{Binding DisableChemistryStyleFields}"></ComboBox>
+                          VerticalAlignment="Top" Width="250" Height="30" IsEnabled="{Binding DisableChemistryStyleFields}"
+                          SelectedIndex="{Binding SelectedIndexQuality}"></ComboBox>
                 
                 <!-- Chemistry Style -->
                 <Label x:Name="lblChemistryStyle" Content="Chemistry Style:" Margin="0, 270,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30"/>
                 <ComboBox Name="cboChemistryStyle" VerticalContentAlignment="Center" Text="{Binding SelectedChemistryStyle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                           HorizontalAlignment="Left" ItemsSource="{Binding ChemistryStyles}" IsEditable="False" IsTextSearchEnabled="False" Margin="115,270,0,0"
-                          VerticalAlignment="Top" Width="250" Height="30"></ComboBox>
+                          VerticalAlignment="Top" Width="250" Height="30" SelectedIndex="{Binding SelectedIndexChemistryStyle}"></ComboBox>
 
                 <!-- Rating -->
                 <Label x:Name="lblRating" Content="Rating:" Margin="0, 305,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30"/>
@@ -97,65 +103,51 @@
                           HorizontalAlignment="Left" SelectedIndex="0" ItemsSource="{Binding SellItem}" IsEditable="False" IsTextSearchEnabled="False" Margin="115,410,0,0"
                           VerticalAlignment="Top" Width="250" Height="30"></ComboBox>
                 
-                <Button x:Name="btnAdd" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Add" Margin="0,495,0,0" 
+                <Button x:Name="btnAdd" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Add" Margin="0,460,0,0" 
                         Width="175" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Click="btnAdd_Click"/>
-                <Button x:Name="btnRemove" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Remove" Margin="185,495,0,0" 
+                <Button x:Name="btnRemove" BorderBrush="#FFACACAC" IsEnabled="{Binding EnableAddButton, UpdateSourceTrigger=PropertyChanged}" Content="Remove" Margin="185,460,0,0" 
                         Width="180" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnRemove_Click"/>
-                <!-- <CheckBox IsChecked="{Binding PlayerIsSpecial}" Content="Special" HorizontalAlignment="Left" Height="30" Margin="0,130,0,0" BorderBrush="#FFACACAC" VerticalAlignment="Top" Width="60" VerticalContentAlignment="Center" FlowDirection="RightToLeft" /> -->
 
+                <!--Start-->
+                <Button x:Name="btnStart1" Background="{Binding StartButtonColour}" IsEnabled="{Binding EnableAddButton}" Content="{Binding ConnectButton}" Margin="0,495,0,0" Width="365" VerticalAlignment="top" HorizontalAlignment="Left" Height="38" 
+                        Click="btnStart_Click" BorderBrush="#FFACACAC"/>
             </Grid>
             
         </TabItem>
-        <TabItem Header="Search" >
+        <TabItem Header="Stats" >
             <Grid HorizontalAlignment="Left" Height="580" Margin="5,5,-6,0" VerticalAlignment="Top" Width="365" >
-
-                <!--Players-->
-                <!--<ListView x:Name="listViewPlayers" ItemsSource="{Binding SearchFilters}" DisplayMemberPath="LogMessage" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,45,0,0" Width="365" Height="80"/>-->
-                <DataGrid x:Name="DataGridPlayers" HorizontalAlignment="Left" GridLinesVisibility="None" AutoGenerateColumns="False" RowHeaderWidth="0" BorderThickness="1"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True"  ColumnWidth="*" 
-                          ItemsSource="{Binding SearchFilters}" Height="200" Margin="0,0,0,0" VerticalAlignment="Top" Width="365">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Type" Width="100" Binding="{Binding Type}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Name" Width="100" Binding="{Binding GetPlayerName}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style>
-                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Position" Width="100" Binding="{Binding GetPosition}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Quality" Width="100" Binding="{Binding GetQuality}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Chemistry Style" Width="100" Binding="{Binding GetChemistryStyle}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Rating" Width="50" Binding="{Binding GetRating}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Min Price" Width="50" Binding="{Binding GetMinPrice}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Max Price" Width="50" Binding="{Binding GetMaxPrice}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Sell Item" Width="50" Binding="{Binding SellItem}"></DataGridTextColumn>
-
-                    </DataGrid.Columns>
-                </DataGrid>
-                
-                
-                
-               
-
                 <!--Labels-->
-                <Label x:Name="lblStartingCreditsTitle" Content="Starting Credits:" Margin="0, 210,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"/>
-                <Label x:Name="lblStartingCredits"  Content="{Binding StartingCredits, Mode=TwoWay, NotifyOnTargetUpdated=True}" Margin="115,210,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" 
+                <Label x:Name="lblStartingCreditsTitle" Content="Starting Credits:" Margin="0, 0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"/>
+                <Label x:Name="lblStartingCredits"  Content="{Binding StartingCredits, Mode=TwoWay, NotifyOnTargetUpdated=True}" Margin="115,0,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" 
                        Width="250" BorderThickness="1" BorderBrush="#FFACACAC"/>
-                <Label x:Name="lblCurrentCreditsTitle" Content="Current Credits:" Margin="0, 245,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"/>
-                <Label x:Name="lblCurrentCredits" Content="{Binding CurrentCredits}" HorizontalAlignment="Left" Height="30" Margin="115,245,0,0" VerticalAlignment="Top" Width="250" BorderThickness="1" 
+                <Label x:Name="lblCurrentCreditsTitle" Content="Current Credits:" Margin="0, 35,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"/>
+                <Label x:Name="lblCurrentCredits" Content="{Binding CurrentCredits}" HorizontalAlignment="Left" Height="30" Margin="115,35,0,0" VerticalAlignment="Top" Width="250" BorderThickness="1" 
                        BorderBrush="#FFACACAC"/>
-                <Label x:Name="lblAssetsTitle" Content="Current Assets:" Margin="0, 280,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"  />
-                <Label x:Name="lblAssets" Content="{Binding Assets}" HorizontalAlignment="Left" Height="30" Margin="115,280,0,0" VerticalAlignment="Top" Width="250" BorderThickness="1" BorderBrush="#FFACACAC" />
-                <Label x:Name="lblTotalCreditsTitle" Content="Total Credits:" Margin="0, 315,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"  />
-                <Label x:Name="lblTotalCredits" Content="{Binding Total}" HorizontalAlignment="Left" Height="30" Margin="115,315,0,0" VerticalAlignment="Top" Width="250" BorderThickness="1" BorderBrush="#FFACACAC" />
-                <Label x:Name="lblProfitTitle" Content="Total Profit:" Margin="0, 350,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"  />
-                <Label x:Name="lblProfit" Content="{Binding Profit}" HorizontalAlignment="Left" Height="30" Margin="115,350,0,0" VerticalAlignment="Top" BorderThickness="1" Width="250" BorderBrush="#FFACACAC" />
+                <Label x:Name="lblAssetsTitle" Content="Current Assets:" Margin="0, 70,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"  />
+                <Label x:Name="lblAssets" Content="{Binding Assets}" HorizontalAlignment="Left" Height="30" Margin="115,70,0,0" VerticalAlignment="Top" Width="250" BorderThickness="1" BorderBrush="#FFACACAC" />
+                <Label x:Name="lblTotalCreditsTitle" Content="Total Credits:" Margin="0, 105,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"  />
+                <Label x:Name="lblTotalCredits" Content="{Binding Total}" HorizontalAlignment="Left" Height="30" Margin="115,105,0,0" VerticalAlignment="Top" Width="250" BorderThickness="1" BorderBrush="#FFACACAC" />
+                <Label x:Name="lblProfitTitle" Content="Total Profit:" Margin="0,140,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="110"  />
+                <Label x:Name="lblProfit" Content="{Binding Profit}" HorizontalAlignment="Left" Height="30" Margin="115,140,0,0" VerticalAlignment="Top" BorderThickness="1" Width="250" BorderBrush="#FFACACAC" />
 
 
 
+                
+
+                <!--Start-->
+                <Button x:Name="btnStart" Background="{Binding StartButtonColour}" IsEnabled="{Binding EnableAddButton}" Content="{Binding ConnectButton}" Margin="0,495,0,0" Width="365" VerticalAlignment="top" HorizontalAlignment="Left" Height="38" 
+                        Click="btnStart_Click" BorderBrush="#FFACACAC"/>
+                
+
+
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Log">
+            <Grid HorizontalAlignment="Left" Height="540" Margin="5,5,0,0" VerticalAlignment="Top" Width="365">
                 <!--Grid-->
                 <DataGrid HorizontalAlignment="Left" GridLinesVisibility="None" AutoGenerateColumns="False" RowHeaderWidth="0" BorderThickness="1"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True"  ColumnWidth="*" 
-                          ItemsSource="{Binding Log}" Height="100" Margin="0,390,-1,0" VerticalAlignment="Top" Width="365">
+                          ItemsSource="{Binding Log}" Height="490" Margin="0,0,-1,0" VerticalAlignment="Top" Width="365">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Time" Width="60" Binding="{Binding Time}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Message" Binding="{Binding Message}">
@@ -168,15 +160,11 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <!--Start-->
-                <Button x:Name="btnStart" Background="{Binding StartButtonColour}" IsEnabled="{Binding EnableAddButton}" Content="{Binding ConnectButton}" Margin="0,495,0,0" Width="365" VerticalAlignment="top" HorizontalAlignment="Left" Height="38" 
+                <Button x:Name="btnStart3" Background="{Binding StartButtonColour}" IsEnabled="{Binding EnableAddButton}" Content="{Binding ConnectButton}" Margin="0,495,0,0" Width="365" VerticalAlignment="top" HorizontalAlignment="Left" Height="38" 
                         Click="btnStart_Click" BorderBrush="#FFACACAC"/>
-                
-
-
             </Grid>
         </TabItem>
-
+        
         <TabItem Header="Settings">
             <Grid HorizontalAlignment="Left" Height="400" Margin="5,5,0,0" VerticalAlignment="Top" Width="365">
 

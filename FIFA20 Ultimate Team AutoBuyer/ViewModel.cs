@@ -58,6 +58,10 @@ namespace FIFA20_Ultimate_Team_Autobuyer
         public string PlayerMinPrice { get; set; }
         public string PlayerMaxPrice { get; set; }
 
+        public int SelectedIndexChemistryStyle { get; set; }
+        public int SelectedIndexPosition { get; set; }
+        public int SelectedIndexQuality { get; set; }
+
         public string PlayerRating { get; set; }
 
         public bool EnableSelling { get; set; } = true;
