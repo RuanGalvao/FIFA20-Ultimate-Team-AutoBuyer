@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FIFA20_Ultimate_Team_Autobuyer.Enums
+namespace FIFA20_Ultimate_Team_AutoBuyer.Enums
 {
     public enum FIFAUltimateTeamStatusCode
     {
@@ -17,7 +17,8 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Enums
         InternalServerError = 500,
         CaptureRequired = 458,
         Sold = 461,
-        InsufficentFunds = 470
+        RetryAfter = 512,
+        TooManyRequests = 429
     }
      
 }

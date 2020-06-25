@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace FIFA20_Ultimate_Team_Autobuyer
+namespace FIFA20_Ultimate_Team_AutoBuyer
 {
     /// <summary>
     /// Interaction logic for App.xaml

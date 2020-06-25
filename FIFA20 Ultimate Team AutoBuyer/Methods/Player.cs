@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace FIFA20_Ultimate_Team_Autobuyer.Methods
+namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
 {
     public static class Player
     {
@@ -36,21 +36,28 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
 
         public static int GetID(string playerName)
         {
+            if (playerName == null) throw new ArgumentNullException("playerName");
+            if (string.IsNullOrWhiteSpace(playerName)) throw new ArgumentException("playerName");
             return allPlayers.Where(player => string.Equals(player.PlayerName, playerName, StringComparison.OrdinalIgnoreCase)).Select(player => player.ID).FirstOrDefault();
         }
 
         public static int GetID(string playerName, int rating)
-        { 
+        {
+            if (playerName == null) throw new ArgumentNullException("playerName");
+            if (string.IsNullOrWhiteSpace(playerName)) throw new ArgumentException("playerName");
+            if (rating <= 0) throw new ArgumentException("rating");
             return allPlayers.Where(player => player.Rating == rating && string.Equals(player.PlayerName, playerName, StringComparison.OrdinalIgnoreCase)).Select(player => player.ID).FirstOrDefault();
         }
             
         public static string GetName(int playerID)
         {
+            if (playerID <= 0) throw new ArgumentException("playerID");
             return allPlayers.Where(player => player.ID == playerID).Select(player => player.PlayerName).FirstOrDefault();
         }
 
         public static int GetRating(int playerID)
         {
+            if (playerID <= 0) throw new ArgumentException("playerID");
             return allPlayers.Where(player=> player.ID == playerID).Select(player => player.Rating).FirstOrDefault();
         }
 

@@ -16,7 +16,6 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Tasks
 
         public NetworkTasks(string sessionID)
         {
-            if (string.IsNullOrEmpty(sessionID)) throw new Exception("Invalid SessionID");
             SessionID = sessionID;
         }
 

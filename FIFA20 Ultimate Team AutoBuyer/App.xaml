@@ -1,7 +1,7 @@
-﻿<Application x:Class="FIFA20_Ultimate_Team_Autobuyer.App"
+﻿<Application x:Class="FIFA20_Ultimate_Team_AutoBuyer.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:FIFA20_Ultimate_Team_Autobuyer"
+             xmlns:local="clr-namespace:FIFA20_Ultimate_Team_AutoBuyer"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

@@ -1,35 +1,18 @@
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\x86\Release\FIFA20 Ultimate Team Autobuyer.exe.config
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\x86\Release\FIFA20 Ultimate Team Autobuyer.exe
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\x86\Release\FIFA20 Ultimate Team Autobuyer.pdb
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\x86\Release\DotNetKit.Wpf.AutoCompleteComboBox.dll
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\x86\Release\Newtonsoft.Json.dll
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\bin\x86\Release\Newtonsoft.Json.xml
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\MainWindow.baml
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\MainWindow.g.cs
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\App.g.cs
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\FIFA20 Ultimate Team Autobuyer_MarkupCompile.cache
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\FIFA20 Ultimate Team Autobuyer.g.resources
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\FIFA20_Ultimate_Team_Autobuyer.Properties.Resources.resources
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csproj.GenerateResource.cache
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csproj.Fody.CopyLocal.cache
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csproj.CopyComplete
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\FIFA20 Ultimate Team Autobuyer.exe
-C:\Users\jordan.paulson\Desktop\FIFA2.0\FIFA20 Ultimate Team Autobuyer 2.0\obj\x86\Release\FIFA20 Ultimate Team Autobuyer.pdb
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\FIFA20 Ultimate Team Autobuyer.exe.config
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\FIFA20 Ultimate Team Autobuyer.exe
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\FIFA20 Ultimate Team Autobuyer.pdb
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\DotNetKit.Wpf.AutoCompleteComboBox.dll
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\Newtonsoft.Json.dll
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\Newtonsoft.Json.xml
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csprojAssemblyReference.cache
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\MainWindow.baml
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\MainWindow.g.cs
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\App.g.cs
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer_MarkupCompile.cache
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer.g.resources
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20_Ultimate_Team_Autobuyer.Properties.Resources.resources
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csproj.GenerateResource.cache
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csproj.Fody.CopyLocal.cache
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csproj.CopyComplete
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer.exe
-C:\Users\jordan.paulson\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer.pdb
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\FIFA20 Ultimate Team AutoBuyer.exe.config
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\FIFA20 Ultimate Team AutoBuyer.exe
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\FIFA20 Ultimate Team AutoBuyer.pdb
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\DotNetKit.Wpf.AutoCompleteComboBox.dll
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\Newtonsoft.Json.dll
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\bin\x86\Release\Newtonsoft.Json.xml
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csprojAssemblyReference.cache
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\MainWindow.baml
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\MainWindow.g.cs
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\App.g.cs
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team AutoBuyer_MarkupCompile.cache
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team AutoBuyer.g.resources
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20_Ultimate_Team_AutoBuyer.Properties.Resources.resources
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csproj.GenerateResource.cache
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csproj.Fody.CopyLocal.cache
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team Autobuyer 2.0.csproj.CopyComplete
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team AutoBuyer.exe
+C:\Users\Jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team Autobuyer\obj\x86\Release\FIFA20 Ultimate Team AutoBuyer.pdb

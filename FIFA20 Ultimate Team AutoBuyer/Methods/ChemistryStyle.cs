@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FIFA20_Ultimate_Team_Autobuyer.Methods
+namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
 {
     public static class ChemistryStyle
     {
@@ -12,7 +10,7 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
 
         static ChemistryStyle()
         {
-            var s = new List<Models.Filter>
+            allChemistryStyles = new List<Models.Filter>
             {
                 new Models.Filter { ID = 250, ChemistryStyle = "Basic" },
                 new Models.Filter { ID = 251, ChemistryStyle = "Sniper" },
@@ -39,16 +37,18 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Methods
                 new Models.Filter { ID = 272, ChemistryStyle = "Glove" },
                 new Models.Filter { ID = 273, ChemistryStyle = "GK Basic" }
             };
-            allChemistryStyles = s;
         }
 
         public static int GetID(string chemistryStyleName)
         {
+            if (chemistryStyleName == null) throw new ArgumentNullException("chemistryStyleName");
+            if (string.IsNullOrWhiteSpace(chemistryStyleName)) throw new ArgumentException("chemistryStyleName");
             return allChemistryStyles.Where(player => string.Equals(player.ChemistryStyle, chemistryStyleName, StringComparison.OrdinalIgnoreCase)).Select(i => i.ID).FirstOrDefault();
         }
 
         public static string GetName(int chemistryStyleID)
         {
+            if (chemistryStyleID <= 0) throw new ArgumentException("chemistryStyleName");
             return allChemistryStyles.Where(i => i.ID == chemistryStyleID).Select(i => i.ChemistryStyle).FirstOrDefault();
         }
 

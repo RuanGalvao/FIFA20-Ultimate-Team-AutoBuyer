@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace FIFA20_Ultimate_Team_Autobuyer.Models
+namespace FIFA20_Ultimate_Team_AutoBuyer.Models
 {
     public class Filter
     {
         public string PlayerName { get; set; }
         public bool IsLegend { get; set; }
-
         public string Position { get; set; }
         public string Quality { get; set; }
         public string ChemistryStyle { get; set; }
@@ -26,17 +25,10 @@ namespace FIFA20_Ultimate_Team_Autobuyer.Models
         public string GetChemistryStyle => ChemistryStyle == "" ? "N/A" : ChemistryStyle;
         public string GetMinPrice => MinPrice == 0 ? "N/A" : MinPrice.ToString();
         public string GetMaxPrice => MaxPrice == 0 ? "N/A" : MaxPrice.ToString();
-        public string GetQuality => Type == "Player" ? CalculatePlayerQuality() : "Gold";
 
-        public string CalculatePlayerQuality() 
-        {
-            if (!string.IsNullOrEmpty(Quality)) return Quality;
-
-            var rating = Methods.Player.GetRating(ID);
-
-            if (rating < 65) return "Bronze";
-            if (rating < 75) return "Silver";
-            return "Gold";
-        }
+        //public override string ToString()
+        //{
+        //    return String.Format($"{ID}{MinPrice}{MaxPrice}{Sell}{SearchPrice}");
+        //}
     }
 }
