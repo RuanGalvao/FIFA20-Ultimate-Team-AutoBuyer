@@ -10,18 +10,18 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Tasks
 {
     public class NetworkTasks
     {
-        private readonly string SessionID;
-        private readonly string BaseURL = $"https://utas.external.s3.fut.ea.com/ut/game/fifa{Declarations.YEAR}/";
+        private readonly viewModel ViewModel;
         private readonly HttpClient httpClient = new HttpClient();
 
-        public NetworkTasks(string sessionID)
+        public NetworkTasks(viewModel viewModel)
         {
-            SessionID = sessionID;
+            ViewModel = viewModel;
         }
 
         private void AddHTTPClientHeaders(HttpClient httpClient)
         {
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-UT-SID", SessionID);
+            httpClient.DefaultRequestHeaders.Clear();
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-UT-SID", ViewModel.SessionID);
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("user-agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
         }
@@ -62,8 +62,8 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Tasks
 
         private HttpRequestMessage CreateHttpRequestMessage(HttpMethod method, string path, StringContent content)
         {
-            var httpRequestMessage = new HttpRequestMessage(method, $"{BaseURL}path");
-            httpRequestMessage.Content = content;
+            var httpRequestMessage = new HttpRequestMessage(method, path);
+            if (content != null) httpRequestMessage.Content = content;
             AddHTTPClientHeaders(httpClient);
             return httpRequestMessage;
         }
@@ -99,6 +99,9 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Tasks
 
             if (value == Enums.FIFAUltimateTeamStatusCode.TooManyRequests)
                 throw new HandledException("Too many requests have been made", true, 0, true);
+
+            if (value == Enums.FIFAUltimateTeamStatusCode.UpgradeRequired)
+                throw new HandledException("Upgrade Required");
         }
 
     }

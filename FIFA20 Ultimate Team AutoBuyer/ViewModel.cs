@@ -1,4 +1,5 @@
-﻿using FIFA20_Ultimate_Team_AutoBuyer.Models;
+﻿using FIFA20_Ultimate_Team_AutoBuyer.Methods;
+using FIFA20_Ultimate_Team_AutoBuyer.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +16,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
         public List<string> Players { get => 
                 AllPlayers
                 .OrderByDescending(x => x.Rating)
-                .Select(player => $"{player.PlayerName} {player.Rating}")
+                .Select(player => $"{player.FriendlyName} {player.Rating}")
                 .Where(x => x.IndexOf(SelectedPlayer, 0, StringComparison.InvariantCultureIgnoreCase) != -1 && SelectedPlayer.Length > 0)
                 .Take(5)
                 .ToList(); 
@@ -26,36 +27,17 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
 
         public List<string> Types { get => new List<string> { "Player", "Chemistry Style"}; }
 
-        public IEnumerable<string> ChemistryStyles => new List<string> { "" }.Concat(Methods.ChemistryStyle.ReturnAllChemistrystyles().ToList());
+        public IEnumerable<string> ChemistryStyles => new List<string> { "" }.Concat(ChemistryStyle.ReturnAllChemistrystyles().ToList());
 
         public List<string> Qualities { get => new List<string> { "", "Bronze", "Silver", "Gold", "Special"}; }
 
         public List<string> SellItem { get => new List<string> { "True", "False" }; }
 
-        public List<Models.Filter> AllPlayers { get => Methods.Player.GetAll(); }
+        public List<PlayerItem> AllPlayers { get => Player.GetAll(); }
         public ObservableCollection<Log> Log { get; set; } = new ObservableCollection<Log>();
-        public ObservableCollection<Filter> SearchFilters { get; set; } = new ObservableCollection<Filter>();
+        public ObservableCollection<IMarketplaceItem> MarketplaceItems { get; set; } = new ObservableCollection<IMarketplaceItem>();
 
-        public ObservableCollection<TradePileGrid> TradePile { get; set; } = new ObservableCollection<TradePileGrid>();
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            foreach (var s in SearchFilters)
-            {
-                sb.Append(s.Type + ",");
-                sb.Append(s.ID.ToString() + ",");
-                sb.Append(s.Position + ",");
-                sb.Append(s.Quality + ",");
-                sb.Append(s.ChemistryStyle + ",");
-                sb.Append(s.Rating + ",");
-                sb.Append(s.MinPrice + ",");
-                sb.Append(s.MaxPrice + ",");
-                sb.Append(s.Sell);
-                sb.Append("\n");
-            }
-            return sb.ToString();
-        }
+        public ObservableCollection<TradePileGrid> Tradepile { get; set; } = new ObservableCollection<TradePileGrid>();
 
         public List<string> SellPriceBin { get => new List<string> { "Very Low", "Low", "Medium", "High", "Automatic" }; }
         public string SelectedSellBin { get; set; } = "Very Low";
@@ -72,18 +54,23 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
             };
         }
 
-        public string SelectedDuration { get; set; } = "3 Hours";
+        public string Duration { get; set; } = "3 Hours";
+
+        public int SelectedDuration => Durations.Where(p => p.Name == Duration).First().Seconds;
 
         public string SelectedType { get; set; } = "Player";
         public string SelectedPlayer { get; set; } = "";
         public string SelectedChemistryStyle { get; set; } = "";
+
+        public int SelectedChemistryStyleId => string.IsNullOrEmpty(SelectedChemistryStyle) ? 0 : ChemistryStyle.GetID(SelectedChemistryStyle);
+
         public string SelectedQuality { get; set; }
         public string SelectedPosition { get; set; }
         public bool SelectedSellItem { get; set; }
 
-        public List<string> MinProfitMargin { get => new List<string> { "1000", "2000", "3000", "4000", "5000" }; }
-        public string SelectedMinProfitMargin { get; set; } = "4000";
-
+        public List<string> MinProfitMarginList { get => new List<string> { "1000", "2000", "3000", "4000", "5000" }; }
+        public string MinProfitMargin { get; set; } = "4000";
+        public int SelectedMinProfitMargin => Convert.ToInt32(MinProfitMargin);
 
         public string SessionID { get; set; }
         public int StartingCredits { get; set; } = 0;
@@ -101,10 +88,17 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
         public string PlayerMinPrice { get; set; }
         public string PlayerMaxPrice { get; set; }
 
+
+
+        public int SelectedMinPrice => string.IsNullOrEmpty(PlayerMinPrice) ? 0 : Convert.ToInt32(PlayerMinPrice);
+        public int SelectedMaxPrice => string.IsNullOrEmpty(PlayerMaxPrice) ? 0 : Convert.ToInt32(PlayerMaxPrice);
+
+        public int SelectedRating => string.IsNullOrEmpty(PlayerRating) ? 0 : Convert.ToInt32(PlayerRating);
+
         public int SelectedIndexChemistryStyle { get; set; }
         public int SelectedIndexPosition { get; set; }
         public int SelectedIndexQuality { get; set; }
-        public string SelectedRating { get; set; }
+        public string PlayerRating { get; set; }
         public bool EnableSelling { get; set; } = true;
 
         public int SelectedOriginalRating => Convert.ToInt32(SelectedPlayer.Substring(SelectedPlayer.Length - 2, 2));
@@ -112,5 +106,44 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
         public bool DisableRating => SelectedType == "Player" && SelectedQuality == "Special";
         public bool DisableMinPrice => SelectedType == "Player" && SelectedQuality == "Special";
         public bool DisableMaxPrice => SelectedType == "Player" && SelectedQuality == "Special";
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            foreach(var item in MarketplaceItems)
+            {
+                if (item.ItemType == Declarations.PLAYER)
+                {
+                    var playerItem = (PlayerItem)item;
+                    sb.Append(Declarations.PLAYER + ",");
+                    sb.Append(playerItem.Id.ToString() + ",");
+                    sb.Append(playerItem.Position + ",");
+                    sb.Append(playerItem.Quality + ",");
+                    sb.Append(playerItem.ChemistryStyle + ",");
+                    sb.Append(playerItem.Rating + ",");
+                    sb.Append(playerItem.MinPrice + ",");
+                    sb.Append(playerItem.MaxPrice + ",");
+                    sb.Append(playerItem.Sell);
+                    sb.Append("\n");
+                }
+                if (item.ItemType == Declarations.CHEMISTRY_STYLE)
+                {
+                    var chemistryStyleItem = (ChemistryStyleItem)item;
+                    sb.Append(Declarations.CHEMISTRY_STYLE + ',');
+                    sb.Append(chemistryStyleItem.Id.ToString() + ',');
+                    sb.Append(",");
+                    sb.Append(chemistryStyleItem.Quality + ",");
+                    sb.Append(",");
+                    sb.Append(chemistryStyleItem.Rating + ",");
+                    sb.Append(chemistryStyleItem.MinPrice + ",");
+                    sb.Append(chemistryStyleItem.MaxPrice + ",");
+                    sb.Append(chemistryStyleItem.Sell);
+                    sb.Append("\n");
+                } 
+            }
+
+            var toString = sb.ToString();
+            return toString.Length == 0 ? "" : toString.Substring(0, toString.Length - 1);
+        }
     }
 }

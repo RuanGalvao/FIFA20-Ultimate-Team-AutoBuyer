@@ -1,7 +1,5 @@
 ﻿using FIFA20_Ultimate_Team_AutoBuyer.Methods;
-using FIFA20_Ultimate_Team_AutoBuyer.Models;
 using FIFA20_Ultimate_Team_AutoBuyer.Tasks;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,94 +11,107 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Workers
         private readonly FifaTasks FifaTasks;
         private readonly viewModel ViewModel;
         private readonly General General;
-        private readonly Utils Utils;
 
         public SearchItemWorker(viewModel viewModel)
         {
             ViewModel = viewModel;
             FifaTasks = new FifaTasks(viewModel);
             General = new General(viewModel);
-            Utils = new Utils();
         }
 
-        private int CalculateSearchPrice(IEnumerable<AuctionInfo.ItemModel> results)
+        private int CalculateSearchPriceUsingTradePileData(IEnumerable<NetworkAuctionInfo.ItemModel> tradepile)
         {
-            if (results.Count() == 1) return results.OrderBy(item => item.BuyNowPrice).First().BuyNowPrice;
-            if (results.Count() == 2) return results.OrderBy(item => item.BuyNowPrice).Take(1).First().BuyNowPrice;
-            return results.OrderBy(item => item.BuyNowPrice).Take(2).First().BuyNowPrice;
+            if (tradepile.Count() == 1) return tradepile.OrderBy(item => item.BuyNowPrice).First().BuyNowPrice;
+            if (tradepile.Count() == 2) return tradepile.OrderBy(item => item.BuyNowPrice).Take(1).First().BuyNowPrice;
+            return tradepile.OrderBy(item => item.BuyNowPrice).ElementAt(2).BuyNowPrice;
         }
 
-        private async Task<IEnumerable<AuctionInfo.ItemModel>> GetResults(Filter filter)
+        private async Task<IEnumerable<NetworkAuctionInfo.ItemModel>> SearchResultsUsingMarketplaceItemFilteredByRatingAsync(IMarketplaceItem item)
         {
-            var searchResults = await FifaTasks.SearchMultiplePagesAsync(filter);
-            return searchResults?.Where(s => s.ItemData.Rating == filter.Rating);
+            List<NetworkAuctionInfo.ItemModel> searchResults = null;
+            if (item.ItemType == Declarations.PLAYER) 
+                searchResults = await FifaTasks.SearchPlayerUsingPlayerItemAsync((PlayerItem)item);
+
+            if (item.ItemType == Declarations.CHEMISTRY_STYLE)
+                searchResults = await FifaTasks.SearchChemistryStyleUsingChemistryStyleItemAsync((ChemistryStyleItem)item);
+
+            return searchResults?.Where(s => s.ItemData.Rating == item.Rating);
         }
 
-        private async Task HandleResults(Filter currentFilter, IEnumerable<AuctionInfo.ItemModel> searchResults)
+        private bool IsSearchPriceEqualToMaxPrice(int searchPrice, int maxPrice)
         {
-            var filterIndex = ViewModel.SearchFilters.IndexOf(currentFilter);
+            return searchPrice == maxPrice && maxPrice != 0;
+        }
+
+        private bool IsSearchPriceEqualToMinPrice(int searchPrice, int minPrice)
+        {
+            return searchPrice == minPrice && minPrice != 0;
+        }
+
+        private async Task HandleResults(IMarketplaceItem marketplaceItem, IEnumerable<NetworkAuctionInfo.ItemModel> searchResults)
+        {
+            var filterIndex = ViewModel.MarketplaceItems.IndexOf(marketplaceItem);
 
             if (searchResults == null) return;
 
-            if (currentFilter.SearchPrice == 0 && searchResults.Count() == 0)
+            if (marketplaceItem.SearchPrice == 0 && searchResults.Count() == 0)
             {
-                General.AddToLog($"No results found for { currentFilter.GetFriendlyName}");
+                General.AddToLog($"No results found for { marketplaceItem.FriendlyName}");
                 return;
             }
             
-            if (currentFilter.SearchPrice == 0)
+            if (marketplaceItem.SearchPrice == 0)
             {
-                ViewModel.SearchFilters.ElementAt(filterIndex).SearchPrice = CalculateSearchPrice(searchResults);
-                General.AddToLog($"Searching for {currentFilter.GetFriendlyName} at {currentFilter.SearchPrice}");
+                ViewModel.MarketplaceItems.ElementAt(filterIndex).SearchPrice = CalculateSearchPriceUsingTradePileData(searchResults);
+                General.AddToLog($"Searching for {marketplaceItem.FriendlyName} at {marketplaceItem.SearchPrice}");
                 return;
             }
             
             if (searchResults.Count() == 0)
             {
-                var nextSearchPrice = General.CalculateNextBid(currentFilter.SearchPrice);
-                if (nextSearchPrice < currentFilter.MaxPrice)
+                if (!IsSearchPriceEqualToMaxPrice(marketplaceItem.SearchPrice, marketplaceItem.MaxPrice))
                 {
-                    ViewModel.SearchFilters.ElementAt(filterIndex).SearchPrice = nextSearchPrice;
-                    General.AddToLog($"Increasing price for {currentFilter.GetFriendlyName} to {currentFilter.SearchPrice}");
+                    //Raise search price
+                    var nextSearchPrice = General.CalculateNextBid(marketplaceItem.SearchPrice);
+                    ViewModel.MarketplaceItems.ElementAt(filterIndex).SearchPrice = nextSearchPrice;
+                    General.AddToLog($"Increasing price for {marketplaceItem.FriendlyName} to {marketplaceItem.SearchPrice}");
                 }
                 return;
             }
             
             if (searchResults.Count() > 5)
             {
-                var nextSearchPrice = General.CalculatePreviousBid(currentFilter.SearchPrice);
-                if (nextSearchPrice > currentFilter.MinPrice)
+                if (!IsSearchPriceEqualToMinPrice(marketplaceItem.SearchPrice, marketplaceItem.MinPrice))
                 {
-                    ViewModel.SearchFilters.ElementAt(filterIndex).SearchPrice = nextSearchPrice;
-                    General.AddToLog($"Decreasing price for {currentFilter.GetFriendlyName} to {currentFilter.SearchPrice}");
+                    //Reduce search price
+                    var nextSearchPrice = General.CalculatePreviousBid(marketplaceItem.SearchPrice);
+                    ViewModel.MarketplaceItems.ElementAt(filterIndex).SearchPrice = nextSearchPrice;
+                    General.AddToLog($"Decreasing price for {marketplaceItem.FriendlyName} to {marketplaceItem.SearchPrice}");
                 }
                 return;
             }
 
             var broughtItems = new List<long>();
-            var maxPrice = General.CalculateMaxBuyNowPrice(currentFilter.SearchPrice, ViewModel.SelectedSellBin) - Utils.ConvertToInt(ViewModel.SelectedMinProfitMargin);
-            var items = searchResults.Where(p => currentFilter.Rating == p.ItemData.Rating && p.BuyNowPrice < maxPrice);
-            foreach (var item in items)
+            var maxPrice = General.CalculateMaxBuyNowPriceUsingSearchPrice(marketplaceItem.SearchPrice) - ViewModel.SelectedMinProfitMargin;
+            foreach (var item in searchResults.Where(p => p.BuyNowPrice < maxPrice))
             {
-                if (await FifaTasks.BuyItemAsync(item.TradeId, item.BuyNowPrice))
+                if (await FifaTasks.BuyItemUsingTradeIdAndBuyNowPriceAsync(item.TradeId, item.BuyNowPrice))
                 {
-                    General.AddToLog($"{currentFilter.GetFriendlyName} brought for {item.BuyNowPrice}");
-
-                    var relistPrice = General.CalculateSellPrice(currentFilter.SearchPrice, ViewModel.SelectedSellBin, ViewModel.CurrentCredits);
-                    ViewModel.Profit += (int)(relistPrice * .95) - item.BuyNowPrice;
-
+                    General.AddToLog($"{marketplaceItem.FriendlyName} brought for {item.BuyNowPrice}");
+                    var relistPrice = General.AmendBidBasedOnSelectedSellBin(marketplaceItem.SearchPrice);
+                    ViewModel.Profit += General.CalculateProfitUsingSellPriceAndBroughtPrice(relistPrice, item.BuyNowPrice);
                     broughtItems.Add(item.ItemData.Id);
                 }
             }
 
             // Moves brought items from unassigned to tradepile ready for re-sale
-            foreach (var item in broughtItems) await FifaTasks.MoveSingleItemToTradePileAsync(item);
+            foreach (var item in broughtItems) await FifaTasks.MoveUnassignedItemToTradepileUsingPlayerInternalId(item);
         }
 
-        public async Task Resolve(Filter filter)
+        public async Task DoWork(IMarketplaceItem item)
         {
-            var searchResults = await GetResults(filter);
-            await HandleResults(filter, searchResults);
+            var searchResults = await SearchResultsUsingMarketplaceItemFilteredByRatingAsync(item);
+            await HandleResults(item, searchResults);
         }
     }
 }

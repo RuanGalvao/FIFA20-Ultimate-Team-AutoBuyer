@@ -7,11 +7,24 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
     public class General
     {
         private readonly viewModel ViewModel;
-        private readonly Utils Utils = new Utils();
 
         public General(viewModel viewModel)
         {
             ViewModel = viewModel;
+        }
+
+        public string AddCommasToNumericString(string numericString)
+        {
+            //var isNumeric = int.TryParse(numericString, out int n);
+            //if (!isNumeric) return numericString;
+            return string.Format("{0:n0}", numericString); //1376 -> 1,376
+        }
+
+        public string ItemTypeToFriendlyName(string itemType)
+        {
+            if (itemType == "player") return Declarations.PLAYER;
+            if (itemType == "chemistryStyle") return Declarations.CHEMISTRY_STYLE;
+            throw new InvalidOperationException();
         }
 
         public int CalculateMinPrice(int value)
@@ -45,7 +58,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
             ViewModel.SelectedPlayer = "";
             ViewModel.PlayerMaxPrice = "";
             ViewModel.PlayerMinPrice = "";
-            ViewModel.SelectedRating = "";
+            ViewModel.PlayerRating = "";
             ViewModel.PlayerMinPrice = "";
             ViewModel.PlayerMaxPrice = "";
             ViewModel.SelectedIndexChemistryStyle = 0;
@@ -53,35 +66,38 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
             ViewModel.SelectedIndexQuality = 0;
         }
 
-        private int GetItemID()
+        private void AddPlayerItemToGrid()
         {
-            if (ViewModel.SelectedType == Declarations.PLAYER) return Player.GetID(ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3));
-            if (ViewModel.SelectedType == Declarations.CHEMISTRY_STYLE) return ChemistryStyle.GetID(ViewModel.SelectedChemistryStyle);
-            throw new InvalidOperationException();
+            ViewModel.MarketplaceItems.Add(new PlayerItem
+            {
+                Id = Player.GetID(ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3), CalculatePlayerRating()),
+                FriendlyName = ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3),
+                Position = ViewModel.SelectedPosition,
+                Quality = CalculateCardQuality(ViewModel.SelectedType),
+                ChemistryStyle = ViewModel.SelectedChemistryStyle,
+                Rating = CalculatePlayerRating(),
+                Sell = ViewModel.SelectedSellItem,
+                MinPrice = ViewModel.SelectedMinPrice,
+                MaxPrice = ViewModel.SelectedMaxPrice
+            });
         }
 
-        private string GetPlayerName()
+        private void AddChemistryStyleItemToGrid()
         {
-            if (ViewModel.SelectedType == Declarations.PLAYER) return ViewModel.SelectedPlayer.Substring(0, ViewModel.SelectedPlayer.Length - 3);
-            if (ViewModel.SelectedType == Declarations.CHEMISTRY_STYLE) return "";
-            throw new InvalidOperationException();
+            ViewModel.MarketplaceItems.Add(new ChemistryStyleItem
+            {
+                Id = ChemistryStyle.GetID(ViewModel.SelectedChemistryStyle),
+                Quality = CalculateCardQuality(ViewModel.SelectedType),
+                FriendlyName = ViewModel.SelectedChemistryStyle,
+                Rating = CalculateChemistryStyleRating(),
+                Sell = ViewModel.SelectedSellItem
+            });
         }
 
         private void AddSearchFilter()
         {
-            ViewModel.SearchFilters.Add(new Filter
-            {
-                Type = ViewModel.SelectedType,
-                ID = GetItemID(),
-                PlayerName = GetPlayerName(),
-                Position = ViewModel.SelectedPosition,
-                Quality = CalculateCardQuality(ViewModel.SelectedType),
-                ChemistryStyle = ViewModel.SelectedChemistryStyle,
-                Rating = CalculateRating(),
-                MinPrice = Utils.ConvertToInt(ViewModel.PlayerMinPrice),
-                MaxPrice = Utils.ConvertToInt(ViewModel.PlayerMaxPrice),
-                Sell = ViewModel.SelectedSellItem
-            });
+            if (ViewModel.SelectedType == Declarations.PLAYER) AddPlayerItemToGrid();
+            if (ViewModel.SelectedType == Declarations.CHEMISTRY_STYLE) AddChemistryStyleItemToGrid();
         }
 
         private string CalculatePlayerQuality()
@@ -99,17 +115,14 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
             throw new InvalidOperationException();
         }
 
-        private int CalculatePlayerRating()
+        private int CalculateChemistryStyleRating()
         {
-            if (ViewModel.SelectedQuality == "Special") return Utils.ConvertToInt(ViewModel.SelectedRating);
-            return ViewModel.SelectedOriginalRating;
+            return 95;
         }
 
-        private int CalculateRating()
+        private int CalculatePlayerRating()
         {
-            if (ViewModel.SelectedType == Declarations.CHEMISTRY_STYLE) return 95;
-            if (ViewModel.SelectedType == Declarations.PLAYER) return CalculatePlayerRating();
-            throw new InvalidOperationException();
+            return ViewModel.SelectedQuality == "Special" ? ViewModel.SelectedRating : ViewModel.SelectedOriginalRating;
         }
 
         public void AddToLog(string message)
@@ -124,33 +137,37 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
             });
         }
 
-        public int CalculateSellPrice(int searchPrice, string option, int currentCredits)
+        public int CalculateProfitUsingSellPriceAndBroughtPrice(int sellPrice, int broughtPrice)
         {
-            switch (option.ToUpper())
-            {
-                case "AUTOMATIC":
-                    // Determine sell price dependant on the amount of credits avail
-                    if (searchPrice * 5 > currentCredits) return CalculatePreviousBid(searchPrice);
-                    if (searchPrice * 15 < currentCredits) return CalculateNextBid(searchPrice);
-                    return searchPrice;
-                case "VERY LOW":
-                    var veryLowPrice = CalculatePreviousBid(searchPrice);
-                    return CalculatePreviousBid(veryLowPrice);
-                case "LOW":
-                    return CalculatePreviousBid(searchPrice);
-                case "MEDIUM":
-                    return searchPrice;
-                case "HIGH":
-                    return CalculateNextBid(searchPrice);
-            }
-            return searchPrice;
+            return (int)(sellPrice * .95) - broughtPrice;
         }
 
-        public int CalculateMaxBuyNowPrice(int currentBid, string sellPriceBin)
+        public int AmendBidBasedOnSelectedSellBin(int currentPrice)
         {
-            var returnPrice = (int)(currentBid * 0.95);
-            if (sellPriceBin.ToUpper() == "VERY LOW") returnPrice -= CalculateNextPriceDifference(returnPrice);
-            return returnPrice - CalculateNextPriceDifference(returnPrice);
+            switch (ViewModel.SelectedSellBin)
+            {
+                case "Automatic":
+                    // Determine sell price dependant on the amount of credits avail
+                    if (currentPrice * 5 > ViewModel.CurrentCredits) return CalculatePreviousBid(currentPrice);
+                    if (currentPrice * 15 < ViewModel.CurrentCredits) return CalculateNextBid(currentPrice);
+                    return currentPrice;
+                case "Very Low":
+                    var veryLowPrice = CalculatePreviousBid(currentPrice);
+                    return CalculatePreviousBid(veryLowPrice);
+                case "Low":
+                    return CalculatePreviousBid(currentPrice);
+                case "Medium":
+                    return currentPrice;
+                case "High":
+                    return CalculateNextBid(currentPrice);
+            }
+            return currentPrice;
+        }
+
+        public int CalculateMaxBuyNowPriceUsingSearchPrice(int searchPrice)
+        {
+            var searchPriceMinusTax = (int)(searchPrice * 0.95);
+            return AmendBidBasedOnSelectedSellBin(searchPriceMinusTax);
         }
 
         public int CalculateNextPriceDifference(int currentBid)

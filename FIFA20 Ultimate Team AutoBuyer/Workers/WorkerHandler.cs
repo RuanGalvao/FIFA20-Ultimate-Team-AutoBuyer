@@ -22,7 +22,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Workers
         public async Task RunWorkers()
         {
             await CheckTradePileWorker.DoWork();
-            for (int i = 0; i < ViewModel.SearchFilters.Count; i++) await SearchItemFetcher.Resolve(ViewModel.SearchFilters[i]);
+            for (int i = 0; i < ViewModel.MarketplaceItems.Count; i++) await SearchItemFetcher.DoWork(ViewModel.MarketplaceItems[i]);
         }
     }
 }

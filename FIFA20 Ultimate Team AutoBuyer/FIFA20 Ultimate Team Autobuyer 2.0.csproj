@@ -95,18 +95,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FifaMessageBox.cs" />
     <Compile Include="Declarations.cs" />
+    <Compile Include="Items\ChemistryStyleItem.cs" />
+    <Compile Include="Items\IMarketplaceItem.cs" />
     <Compile Include="Methods\ChemistryStyle.cs" />
-    <Compile Include="Methods\ChemistryStyleURL.cs" />
+    <Compile Include="URLs\ChemistryStyleURL.cs" />
     <Compile Include="Methods\File.cs" />
     <Compile Include="Methods\General.cs" />
-    <Compile Include="Methods\PlayerURL.cs" />
+    <Compile Include="URLs\PlayerURL.cs" />
     <Compile Include="Models\Duration.cs" />
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\NetworkResponse.cs" />
     <Compile Include="Models\TradePileGrid.cs" />
     <Compile Include="Models\Unassigned.cs" />
+    <Compile Include="Items\PlayerItem.cs" />
+    <Compile Include="URLs\IMarketplaceURL.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Tasks\FifaTasks.cs" />
     <Compile Include="HandledException.cs" />
@@ -132,7 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Methods\Player.cs" />
-    <Compile Include="Models\AuctionInfo.cs" />
+    <Compile Include="Models\NetworkAuctionInfo.cs" />
     <Compile Include="Models\Bid.cs" />
     <Compile Include="Models\ItemData.cs" />
     <Compile Include="Models\NetworkPlayer.cs" />

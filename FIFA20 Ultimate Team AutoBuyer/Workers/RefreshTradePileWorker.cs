@@ -22,68 +22,68 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Workers
             General = new General(viewModel);
         }
 
-        private async Task UpdateUIStats(AuctionInfo tradePile)
+        private async Task UpdateUIStatsUsingTradepileData(NetworkAuctionInfo tradepile)
         {
-            var assetsTotalValue = await FifaTasks.CalculateAssetsAsync(tradePile.auctionInfo);
-            ViewModel.CurrentCredits = tradePile.credits;
-            if (ViewModel.StartingCredits == 0) ViewModel.StartingCredits = tradePile.credits + assetsTotalValue;
-            ViewModel.CurrentCredits = tradePile.credits;
+            var assetsTotalValue = await FifaTasks.CalculateTradepileAssetsTotalValue(tradepile.auctionInfo);
+            ViewModel.CurrentCredits = tradepile.credits;
+            if (ViewModel.StartingCredits == 0) ViewModel.StartingCredits = tradepile.credits + assetsTotalValue;
+            ViewModel.CurrentCredits = tradepile.credits;
             ViewModel.Assets = assetsTotalValue;
-            ViewModel.Total = tradePile.credits + assetsTotalValue;
+            ViewModel.Total = tradepile.credits + assetsTotalValue;
         }
 
-        private void ReportItemSold(AuctionInfo.ItemModel soldItem)
+        private void ReportItemSoldToLog(NetworkAuctionInfo.ItemModel soldItem)
         {
             if (soldItem.ItemData.ItemType == Declarations.PLAYER.ToLower())
                 General.AddToLog($"{Player.GetName(soldItem.ItemData.AssetId)} {Player.GetRating(soldItem.ItemData.AssetId)} sold for {soldItem.CurrentBid}");
 
-            if (soldItem.ItemData.ItemType == Declarations.PLAYER.ToLower())
+            if (soldItem.ItemData.ItemType == "training") // Chemistry Style
                 General.AddToLog($"{ChemistryStyle.GetName(soldItem.ItemData.CardSubTypeId)} sold for {soldItem.CurrentBid}");
         }
 
-        private async Task ResolveSoldItems(IEnumerable<AuctionInfo.ItemModel> soldItems)
+        private async Task RemoveSoldItems(IEnumerable<NetworkAuctionInfo.ItemModel> soldItems)
         {
-            foreach (var item in soldItems) ReportItemSold(item);
-            if (soldItems.Count() > 0) await FifaTasks.RemoveSoldItemsFromTradepile();
+            foreach (var item in soldItems) ReportItemSoldToLog(item);
+            if (soldItems.Count() > 0) await FifaTasks.DeleteSoldItemsFromTradepile();
         }
 
-        private async Task RelistItem(Filter filter, AuctionInfo.ItemModel item)
+        private async Task RelistItem(IMarketplaceItem marketplaceItem, NetworkAuctionInfo.ItemModel item)
         {
-            var relistPrice = General.CalculateSellPrice(filter.SearchPrice, ViewModel.SelectedSellBin, ViewModel.CurrentCredits);
-            await FifaTasks.SellItemAsync(item.ItemData.Id, relistPrice, ViewModel.Durations.Where(p => p.Name == ViewModel.SelectedDuration).First().Seconds);
+            var relistPrice = General.AmendBidBasedOnSelectedSellBin(marketplaceItem.SearchPrice);
+            await FifaTasks.SellItemUsingItemDataIdAndBuyNowPriceAsync(item.ItemData.Id, relistPrice);
         }
 
-        private async Task ResolveUnlistedItems(IEnumerable<AuctionInfo.ItemModel> unlistedItems)
+        private async Task RelistUnsoldItems(IEnumerable<NetworkAuctionInfo.ItemModel> unlistedItems)
         {
-            foreach (var filter in ViewModel.SearchFilters)
+            foreach (var filter in ViewModel.MarketplaceItems)
             {
                 var currentFilterUnlistedItems = unlistedItems
-                    .Where(unlistedItem => (filter.ID == unlistedItem.ItemData.CardSubTypeId || filter.ID == unlistedItem.ItemData.AssetId) && filter.Sell && filter.SearchPrice > 0);
+                    .Where(unlistedItem => (filter.Id == unlistedItem.ItemData.CardSubTypeId || filter.Id == unlistedItem.ItemData.AssetId) && filter.Sell && filter.SearchPrice > 0);
                 foreach (var tradepileItem in currentFilterUnlistedItems) await RelistItem(filter, tradepileItem);
             }
         }
 
         public async Task DoWork()
         {
-            var tradePileData = await FifaTasks.GetTradePileAsync();
-            await UpdateUIStats(tradePileData);
-            await ResolveSoldItems(tradePileData?.auctionInfo.Where(s => s.Expires == -1 && s.CurrentBid != 0));
-            await ResolveUnlistedItems(tradePileData?.auctionInfo.Where(s => s.Expires <= 0));
-            PopulateTradePileGrid(tradePileData);
+            var tradepileData = await FifaTasks.GetTradePileAsync();
+            await UpdateUIStatsUsingTradepileData(tradepileData);
+            await RemoveSoldItems(tradepileData?.auctionInfo.Where(s => s.Expires == -1 && s.CurrentBid != 0));
+            await RelistUnsoldItems(tradepileData?.auctionInfo.Where(s => s.Expires <= 0));
+            PopulateTradePileGrid(tradepileData);
         }
 
-        public void PopulateTradePileGrid(AuctionInfo tradepileData)
+        public void PopulateTradePileGrid(NetworkAuctionInfo tradepileData)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                ViewModel.TradePile = new ObservableCollection<TradePileGrid>();
-                foreach (var item in tradepileData.auctionInfo) ViewModel.TradePile.Add(CreateTradePileGridObject(item));
+                ViewModel.Tradepile = new ObservableCollection<TradePileGrid>();
+                foreach (var item in tradepileData.auctionInfo) AddItemToTradepileGrid(item);
             });
         }
 
-        private TradePileGrid CreateTradePileGridObject(AuctionInfo.ItemModel item)
+        private void AddItemToTradepileGrid(NetworkAuctionInfo.ItemModel item)
         {
-            return new TradePileGrid
+            ViewModel.Tradepile.Add(new TradePileGrid
             {
                 Name = item.ItemData.ItemType == "player" ? Player.GetName(item.ItemData.AssetId) : ChemistryStyle.GetName(item.ItemData.CardSubTypeId),
                 Duration = item.Expires,
@@ -91,7 +91,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Workers
                 Rating = item.ItemData.Rating,
                 Type = item.ItemData.ItemType == "player" ? Declarations.PLAYER : Declarations.CHEMISTRY_STYLE,
                 BuyNowPrice = item.BuyNowPrice
-            };
+            });
         }
     }
 }

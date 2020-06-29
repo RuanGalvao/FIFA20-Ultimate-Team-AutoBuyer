@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using MessageBox = System.Windows.Forms.MessageBox;
 using FIFA20_Ultimate_Team_AutoBuyer.Tasks;
 using FIFA20_Ultimate_Team_AutoBuyer.Workers;
 using File = FIFA20_Ultimate_Team_AutoBuyer.Methods.File;
@@ -16,6 +15,8 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
     public partial class MainWindow : Window
     {
         private readonly viewModel ViewModel = new viewModel();
+        private readonly Validate Validate;
+
         private DateTime nextRunTime;
         private TimeSpan addDelay;
 
@@ -28,6 +29,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
             var searchItemFetcher = new SearchItemWorker(ViewModel);
             var checkTradePileWorker = new RefreshTradePileWorker(ViewModel);
             var workerHandler = new WorkerHandler(ViewModel, searchItemFetcher, checkTradePileWorker);
+            Validate = new Validate(ViewModel);
 
             nextRunTime = DateTime.Now;
             addDelay = new TimeSpan(0, 0, 0);
@@ -44,14 +46,14 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
                         } 
                         catch (HandledException ex)
                         {
-                            if (ex.ForceDisconnect) MessageBox.Show(ex.Message, Declarations.APPLICATION_NAME);
+                            if (ex.ForceDisconnect) FifaMessageBox.Show(ex.Message);
                             ViewModel.IsConnected = !ex.ForceDisconnect;
                             addDelay = new TimeSpan(0, ex.Delay, 0);
                             if (ex.ClearSessionID) ViewModel.SessionID = "";
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ex.Message, Declarations.APPLICATION_NAME);
+                            FifaMessageBox.Show(ex.Message);
                             ViewModel.IsConnected = false;
                         }
 
@@ -65,31 +67,31 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
 
         private void loadFilter_Click(object sender, RoutedEventArgs e)
         {
-            var file = new File();
-            file.LoadFilter(ViewModel);
+            var file = new File(ViewModel);
+            file.LoadMarketplaceItems();
         }
 
         private void saveFilter_Click(object sender, RoutedEventArgs e)
         {
-            var file = new File();
-            file.SaveFilter(ViewModel.ToString());
+            var file = new File(ViewModel);
+            file.SaveMarketplaceItems();
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            if (!new Validate().AllowStart(ViewModel)) return;
+            if (!Validate.AllowStart()) return;
             if (!ViewModel.IsConnected) nextRunTime = DateTime.Now;
             ViewModel.IsConnected = !ViewModel.IsConnected;
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (new Validate().AllowAdd(ViewModel)) new General(ViewModel).AddFilter();
+            if (Validate.AllowAdd()) new General(ViewModel).AddFilter();
         }
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-            if (new Validate().AllowFilterRemoval(ViewModel)) ViewModel.SearchFilters.Remove((Filter)DataGridPlayers1.SelectedItem);
+            if (Validate.AllowFilterRemoval()) ViewModel.MarketplaceItems.Remove((IMarketplaceItem)DataGridPlayers1.SelectedItem);
         }
 
         private void Window_Activated(object sender, EventArgs e)

@@ -6,36 +6,36 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
 {
     public static class ChemistryStyle
     {
-        private static readonly IEnumerable<Models.Filter> allChemistryStyles;
+        private static readonly IEnumerable<ChemistryStyleItem> allChemistryStyles;
 
         static ChemistryStyle()
         {
-            allChemistryStyles = new List<Models.Filter>
+            allChemistryStyles = new List<ChemistryStyleItem>
             {
-                new Models.Filter { ID = 250, ChemistryStyle = "Basic" },
-                new Models.Filter { ID = 251, ChemistryStyle = "Sniper" },
-                new Models.Filter { ID = 252, ChemistryStyle = "Finisher" },
-                new Models.Filter { ID = 253, ChemistryStyle = "Deadeye" },
-                new Models.Filter { ID = 254, ChemistryStyle = "Marksman" },
-                new Models.Filter { ID = 255, ChemistryStyle = "Hawk" },
-                new Models.Filter { ID = 256, ChemistryStyle = "Artist" },
-                new Models.Filter { ID = 257, ChemistryStyle = "Architect" },
-                new Models.Filter { ID = 258, ChemistryStyle = "Powerhouse" },
-                new Models.Filter { ID = 259, ChemistryStyle = "Maestro" },
-                new Models.Filter { ID = 260, ChemistryStyle = "Engine" },
-                new Models.Filter { ID = 261, ChemistryStyle = "Sentinel" },
-                new Models.Filter { ID = 262, ChemistryStyle = "Guardian" },
-                new Models.Filter { ID = 263, ChemistryStyle = "Gladiator" },
-                new Models.Filter { ID = 264, ChemistryStyle = "Backbone" },
-                new Models.Filter { ID = 265, ChemistryStyle = "Anchor" },
-                new Models.Filter { ID = 266, ChemistryStyle = "Hunter" },
-                new Models.Filter { ID = 267, ChemistryStyle = "Catalyst" },
-                new Models.Filter { ID = 268, ChemistryStyle = "Shadow" },
-                new Models.Filter { ID = 269, ChemistryStyle = "Wall" },
-                new Models.Filter { ID = 270, ChemistryStyle = "Shield" },
-                new Models.Filter { ID = 271, ChemistryStyle = "Cat" },
-                new Models.Filter { ID = 272, ChemistryStyle = "Glove" },
-                new Models.Filter { ID = 273, ChemistryStyle = "GK Basic" }
+                new ChemistryStyleItem { Id = 250, FriendlyName = "Basic" },
+                new ChemistryStyleItem { Id = 251, FriendlyName = "Sniper" },
+                new ChemistryStyleItem { Id = 252, FriendlyName = "Finisher" },
+                new ChemistryStyleItem { Id = 253, FriendlyName = "Deadeye" },
+                new ChemistryStyleItem { Id = 254, FriendlyName = "Marksman" },
+                new ChemistryStyleItem { Id = 255, FriendlyName = "Hawk" },
+                new ChemistryStyleItem { Id = 256, FriendlyName = "Artist" },
+                new ChemistryStyleItem { Id = 257, FriendlyName = "Architect" },
+                new ChemistryStyleItem { Id = 258, FriendlyName = "Powerhouse" },
+                new ChemistryStyleItem { Id = 259, FriendlyName = "Maestro" },
+                new ChemistryStyleItem { Id = 260, FriendlyName = "Engine" },
+                new ChemistryStyleItem { Id = 261, FriendlyName = "Sentinel" },
+                new ChemistryStyleItem { Id = 262, FriendlyName = "Guardian" },
+                new ChemistryStyleItem { Id = 263, FriendlyName = "Gladiator" },
+                new ChemistryStyleItem { Id = 264, FriendlyName = "Backbone" },
+                new ChemistryStyleItem { Id = 265, FriendlyName = "Anchor" },
+                new ChemistryStyleItem { Id = 266, FriendlyName = "Hunter" },
+                new ChemistryStyleItem { Id = 267, FriendlyName = "Catalyst" },
+                new ChemistryStyleItem { Id = 268, FriendlyName = "Shadow" },
+                new ChemistryStyleItem { Id = 269, FriendlyName = "Wall" },
+                new ChemistryStyleItem { Id = 270, FriendlyName = "Shield" },
+                new ChemistryStyleItem { Id = 271, FriendlyName = "Cat" },
+                new ChemistryStyleItem { Id = 272, FriendlyName = "Glove" },
+                new ChemistryStyleItem { Id = 273, FriendlyName = "GK Basic" }
             };
         }
 
@@ -43,18 +43,18 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
         {
             if (chemistryStyleName == null) throw new ArgumentNullException("chemistryStyleName");
             if (string.IsNullOrWhiteSpace(chemistryStyleName)) throw new ArgumentException("chemistryStyleName");
-            return allChemistryStyles.Where(player => string.Equals(player.ChemistryStyle, chemistryStyleName, StringComparison.OrdinalIgnoreCase)).Select(i => i.ID).FirstOrDefault();
+            return allChemistryStyles.Where(player => string.Equals(player.FriendlyName, chemistryStyleName, StringComparison.OrdinalIgnoreCase)).Select(i => i.Id).FirstOrDefault();
         }
 
         public static string GetName(int chemistryStyleID)
         {
             if (chemistryStyleID <= 0) throw new ArgumentException("chemistryStyleName");
-            return allChemistryStyles.Where(i => i.ID == chemistryStyleID).Select(i => i.ChemistryStyle).FirstOrDefault();
+            return allChemistryStyles.Where(i => i.Id == chemistryStyleID).Select(i => i.FriendlyName).FirstOrDefault();
         }
 
         public static List<string> ReturnAllChemistrystyles()
         {
-            return allChemistryStyles.Select(p => p.ChemistryStyle).ToList();
+            return allChemistryStyles.Select(p => p.FriendlyName).ToList();
         }
     }
 }

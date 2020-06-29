@@ -31,23 +31,23 @@
                 </TextBlock>
                 
                 <DataGrid x:Name="DataGridPlayers1" HorizontalAlignment="Left" GridLinesVisibility="None" AutoGenerateColumns="False" RowHeaderWidth="0" BorderThickness="1"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True"
-                          ItemsSource="{Binding SearchFilters}" Height="100" Margin="0,20,0,0" VerticalAlignment="Top" Width="365">
+                          ItemsSource="{Binding MarketplaceItems}" Height="100" Margin="0,20,0,0" VerticalAlignment="Top" Width="365">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Type" Width="100" Binding="{Binding Type}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Name" Width="100" Binding="{Binding GetPlayerName}">
+                        <DataGridTextColumn Header="Type" Width="100" Binding="{Binding ItemType}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Name" Width="100" Binding="{Binding FriendlyName}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style>
                                     <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header="Position" Width="100" Binding="{Binding GetPosition}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Position" Width="100" Binding="{Binding Position}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Quality" Width="100" Binding="{Binding Quality}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Chemistry Style" Width="100" Binding="{Binding GetChemistryStyle}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Rating" Width="50" Binding="{Binding GetRating}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Min Price" Width="50" Binding="{Binding GetMinPrice}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Max Price" Width="50" Binding="{Binding GetMaxPrice}"></DataGridTextColumn>
-                        <DataGridCheckBoxColumn Header="Sell" Width="30" Binding="{Binding Sell, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></DataGridCheckBoxColumn>
+                        <DataGridTextColumn Header="Chemistry Style" Width="100" Binding="{Binding ChemistryStyle}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Rating" Width="50" Binding="{Binding Rating}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Min Price" Width="50" Binding="{Binding MinPrice}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Max Price" Width="50" Binding="{Binding MaxPrice}"></DataGridTextColumn>
+                        <DataGridCheckBoxColumn Header="Sell" Width="30" Binding="{Binding Sell}"></DataGridCheckBoxColumn>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -85,7 +85,7 @@
 
                 <!-- Rating -->
                 <Label x:Name="lblRating" Content="Rating:" Margin="0, 305,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30"/>
-                <TextBox Text="{Binding SelectedRating}"  PreviewTextInput="NumberValidationTextBox" BorderThickness="1"
+                <TextBox Text="{Binding PlayerRating}"  PreviewTextInput="NumberValidationTextBox" BorderThickness="1"
                          x:Name="txtRating" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="115,305,0,0" VerticalAlignment="Top" Width="250" 
                           Height="30" BorderBrush="#FFACACAC" LostFocus="txtRating_LostFocus" IsEnabled="{Binding DisableRating, UpdateSourceTrigger=PropertyChanged}"/>
 
@@ -167,7 +167,7 @@
         <TabItem Header="Tradepile">
             <Grid HorizontalAlignment="Left" Height="540" Margin="5,5,0,0" VerticalAlignment="Top" Width="365">
                 <DataGrid x:Name="DataGridTradepile" HorizontalAlignment="Left" GridLinesVisibility="None" AutoGenerateColumns="False" RowHeaderWidth="0" BorderThickness="1"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True"
-                          ItemsSource="{Binding TradePile}" Height="490" Margin="0,0,0,0" VerticalAlignment="Top" Width="365">
+                          ItemsSource="{Binding Tradepile}" Height="490" Margin="0,0,0,0" VerticalAlignment="Top" Width="365">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Type" Width="70" Binding="{Binding Type}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Name" Width="90" Binding="{Binding Name}"></DataGridTextColumn>
@@ -190,12 +190,12 @@
                           HorizontalAlignment="Left" ItemsSource="{Binding SellPriceBin}" Margin="115,5,0,0" VerticalAlignment="Top" Width="250" Height="30"/>
 
                 <Label Content="Listing Duration" Margin="5, 40, 0,0" Height="30" VerticalContentAlignment="Center" Width="110" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
-                <ComboBox Name="cboDuration" SelectedIndex="0" VerticalContentAlignment="Center" Text="{Binding SelectedDuration, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                <ComboBox Name="cboDuration" SelectedIndex="0" VerticalContentAlignment="Center" Text="{Binding Duration, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                           HorizontalAlignment="Left" ItemsSource="{Binding Durations}" SelectedValuePath="Name" DisplayMemberPath="Name" Margin="115, 40, 0,0" VerticalAlignment="Top" Width="250" Height="30"/>
 
                 <Label Content="Min Profit Margin" Margin="5, 75, 0,0" Height="30" VerticalContentAlignment="Center" Width="110" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
-                <ComboBox Name="cboMinProfitMargin" VerticalContentAlignment="Center" Text="{Binding SelectedMinProfitMargin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          HorizontalAlignment="Left" ItemsSource="{Binding MinProfitMargin}" Margin="115, 75, 0,0" VerticalAlignment="Top" Width="250" Height="30" SelectedIndex="3"/>
+                <ComboBox Name="cboMinProfitMargin" VerticalContentAlignment="Center" Text="{Binding MinProfitMargin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          HorizontalAlignment="Left" ItemsSource="{Binding MinProfitMarginList}" Margin="115, 75, 0,0" VerticalAlignment="Top" Width="250" Height="30" SelectedIndex="3"/>
 
             </Grid>
             

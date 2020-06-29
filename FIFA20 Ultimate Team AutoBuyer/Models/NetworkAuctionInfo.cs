@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FIFA20_Ultimate_Team_AutoBuyer
 {
-    public class AuctionInfo
+    public class NetworkAuctionInfo
     {
         public IEnumerable<ItemModel> auctionInfo;
 

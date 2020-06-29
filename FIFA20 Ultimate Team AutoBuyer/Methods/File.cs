@@ -1,6 +1,6 @@
-﻿using FIFA20_Ultimate_Team_AutoBuyer.Models;
-using FIFA20_Ultimate_Team_AutoBuyer.Tasks;
+﻿using FIFA20_Ultimate_Team_AutoBuyer.Tasks;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
@@ -10,6 +10,13 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
 {
     public class File
     {
+        private readonly viewModel ViewModel;
+
+        public File(viewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+
         private OpenFileDialog CreateOpenFileDialog(string title, string filter)
         {
             return new OpenFileDialog
@@ -19,62 +26,76 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
             };
         }
 
-        private string ReadFile(string fileName)
+        private string GetFileContentsToString(string fileName)
         {
-            var sb = new StringBuilder();
-            using (var streamReader = new StreamReader(fileName))
-            {
-                while (!streamReader.EndOfStream) sb.Append(streamReader.ReadLine()).Append("\n");
-            }
-            return sb.ToString();
+            return System.IO.File.ReadAllText(fileName);
         }
 
-        private Filter ConvertLineToFilter(string line)
+        private IMarketplaceItem ConvertLineToMarketplaceItem(string line)
         {
             var elements = line.Split(',');
-            return new Filter
-            {
-                Type = elements[0],
-                ID = Convert.ToInt32(elements[1]),
-                PlayerName = elements[0] == "Player" ? Player.GetName(Convert.ToInt32(elements[1])) : "N/A",
-                Position = elements[2],
-                Quality = elements[3],
-                ChemistryStyle = elements[4],
-                Rating = Convert.ToInt32(elements[5]),
-                MinPrice = Convert.ToInt32(elements[6]),
-                MaxPrice = Convert.ToInt32(elements[7]),
-                Sell = elements[8] == "True" ? true : false
-            };
-        }
 
-        private ObservableCollection<Filter> ConvertToFilters(string contents)
-        {
-            var filters = new ObservableCollection<Filter>();
-            foreach (var line in contents.Split('\n'))
+            if (elements[0] == Declarations.PLAYER)
             {
-                filters.Add(ConvertLineToFilter(line));
+                return new PlayerItem
+                {
+                    FriendlyName = Player.GetName(Convert.ToInt32(elements[1])),
+                    Id = Convert.ToInt32(elements[1]),
+                    Position = elements[2],
+                    Quality = elements[3],
+                    ChemistryStyle = elements[4],
+                    Rating = Convert.ToInt32(elements[5]),
+                    MinPrice = Convert.ToInt32(elements[6]),
+                    MaxPrice = Convert.ToInt32(elements [7]),
+                    Sell = elements[8] == "True" ? true : false
+                };
             }
-            return filters;
+            else if (elements[0] == Declarations.CHEMISTRY_STYLE)
+            {
+                return new ChemistryStyleItem
+                {
+                    FriendlyName = ChemistryStyle.GetName(Convert.ToInt32(elements[1])),
+                    Id = Convert.ToInt32(elements[1]),
+                    Quality = elements[3],
+                    Rating = Convert.ToInt32(elements[5]),
+                    MinPrice = Convert.ToInt32(elements[6]),
+                    MaxPrice = Convert.ToInt32(elements[7]),
+                    Sell = elements[8] == "True" ? true : false
+                };
+            }
+            throw new InvalidOperationException();
         }
 
-        public void LoadFilter(viewModel viewModel)
+        private ObservableCollection<IMarketplaceItem> ConvertListToMarketplaceItems(string contents)
+        {
+            var marketplaceItems = new ObservableCollection<IMarketplaceItem>();
+            var lines = contents.Split('\n');
+            foreach (var line in lines) marketplaceItems.Add(ConvertLineToMarketplaceItem(line));
+            return marketplaceItems;
+        }
+
+        private void GetAndSetMarketplaceItemsUsingOpenFileDialog()
+        {
+            var openFileDialog = CreateOpenFileDialog("Load Filter", "CSV Files (*.csv)|*.csv");
+            if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+            var fileContents = GetFileContentsToString(openFileDialog.FileName);
+            ViewModel.MarketplaceItems = ConvertListToMarketplaceItems(fileContents);
+        }
+
+        public void LoadMarketplaceItems()
         {
             try
             {
-                if (viewModel.IsConnected) throw new HandledException("Application cannot be running while adding a Filter");
-                var openFileDialog = CreateOpenFileDialog("Load Filter", "CSV Files (*.csv)|*.csv");
-                if (openFileDialog.ShowDialog() != DialogResult.OK) return;
-                var fileContents = ReadFile(openFileDialog.FileName);
-                var s = ConvertToFilters(fileContents);
-                viewModel.SearchFilters = s;
+                if (ViewModel.IsConnected) throw new HandledException("Application cannot be running while adding a Filter");
+                GetAndSetMarketplaceItemsUsingOpenFileDialog();
             }
             catch (HandledException ex)
             {
-                MessageBox.Show(ex.Message, Declarations.APPLICATION_NAME);
+                FifaMessageBox.Show(ex.Message);
             }
             catch (Exception)
             {
-                MessageBox.Show("Unable to load filter", Declarations.APPLICATION_NAME);
+                FifaMessageBox.Show("Unable to load filter");
             }
         }
 
@@ -87,18 +108,31 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
             };
         }
 
-        public void SaveFilter(string data)
+        private void SaveStringToCSVUsingSaveFileDialog(string contents)
+        {
+            if (contents.Length == 0) throw new HandledException("No filters exist");
+            var saveFileDialog = CreateSaveFileDialog("Save Filter", "CSV Files (*.csv)|*.csv");
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                System.IO.File.WriteAllText(saveFileDialog.FileName, contents);
+                FifaMessageBox.Show("Filters saved successfully");
+            }
+            saveFileDialog.Dispose();
+        }
+
+        public void SaveMarketplaceItems()
         {
             try
             {
-                var saveFileDialog = CreateSaveFileDialog("Save Filter", "CSV Files (*.csv)|*.csv");
-                if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
-                System.IO.File.WriteAllText(saveFileDialog.FileName, data);
-                MessageBox.Show("Filter saved successfully", Declarations.APPLICATION_NAME);
+                SaveStringToCSVUsingSaveFileDialog(ViewModel.ToString());
+            }
+            catch (HandledException ex)
+            {
+                FifaMessageBox.Show(ex.Message);
             }
             catch (Exception)
             {
-                MessageBox.Show("Unable to save filter", Declarations.APPLICATION_NAME);
+                FifaMessageBox.Show("Unable to save filters");
             }
         }
     }

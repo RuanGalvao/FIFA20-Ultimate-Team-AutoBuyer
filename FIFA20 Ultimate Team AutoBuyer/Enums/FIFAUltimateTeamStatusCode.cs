@@ -19,6 +19,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Enums
         Sold = 461,
         RetryAfter = 512,
         TooManyRequests = 429
+
     }
      
 }

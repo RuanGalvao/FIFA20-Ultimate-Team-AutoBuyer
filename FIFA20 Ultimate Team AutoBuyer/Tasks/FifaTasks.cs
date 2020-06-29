@@ -3,7 +3,6 @@ using FIFA20_Ultimate_Team_AutoBuyer.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,164 +13,162 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Tasks
     {
         private readonly viewModel ViewModel;
         private readonly NetworkTasks NetworkTasks;
-        private readonly PlayerURL PlayerURL = new PlayerURL();
-        private readonly ChemistryStyleURL ChemistryStyleURL = new ChemistryStyleURL();
+        private readonly string BaseURL = $"https://utas.external.s3.fut.ea.com/ut/game/fifa{Declarations.YEAR}/";
+
+        private PlayerURL PlayerURL;
+        private ChemistryStyleURL ChemistryStyleURL;
 
         public FifaTasks(viewModel viewModel)
         {
             ViewModel = viewModel;
-            NetworkTasks = new NetworkTasks(viewModel.SessionID);
+            NetworkTasks = new NetworkTasks(viewModel);
         }
 
-        private int CalculateActiveListingsTotalValue(IEnumerable<AuctionInfo.ItemModel> items)
+        private int CalculateActiveListingsTotalValue(IEnumerable<NetworkAuctionInfo.ItemModel> items)
         {
             return items.Where(i => i.Expires > 0).Sum(item => item.BuyNowPrice);
         }
 
-        private int CalculateExpiredListingsTotalValue(IEnumerable<AuctionInfo.ItemModel> items)
+        private int CalculateExpiredListingsTotalValue(IEnumerable<NetworkAuctionInfo.ItemModel> items)
         {
             return items.Where(i => i.Expires == -1 && i.CurrentBid == 0).Sum(item => item.BuyNowPrice);
         }
 
-        private async Task<int> CalculateUnlistedListingsTotalValueAsync(IEnumerable<AuctionInfo.ItemModel> items)
+        private async Task<int> CalculateUnlistedListingsTotalValueAsync(IEnumerable<NetworkAuctionInfo.ItemModel> items)
         {
-            var unlisted = items.Where(i => i.Expires == 0);
+            var unlistedItems = items.Where(i => i.Expires == 0);
             var runningTotal = 0;
-            foreach (var item in unlisted)
+            foreach (var item in unlistedItems)
             {
                 Sleep();
-                runningTotal += await GetItemSellingPrice(item.ItemData.ItemType, item.ItemData.ResourceId);
+                runningTotal += await GetPlayerSellingPriceUsingResourceID(item.ItemData.ResourceId);
             }
             return runningTotal;
         }
 
-        public async Task<int> CalculateAssetsAsync(IEnumerable<AuctionInfo.ItemModel> items)
+        public async Task<int> CalculateTradepileAssetsTotalValue(IEnumerable<NetworkAuctionInfo.ItemModel> items)
         {
             if (items == null) return 0;
-            var total = 0;
-            total += CalculateActiveListingsTotalValue(items);
+            var total = CalculateActiveListingsTotalValue(items);
             total += CalculateExpiredListingsTotalValue(items);
             total += await CalculateUnlistedListingsTotalValueAsync(items);
             return (int)(total * 0.95);
         }
 
-        public async Task<int> GetItemSellingPrice(string type, long definitionID)
+        public async Task<int> GetPlayerSellingPriceUsingResourceID(long resourceId)
         {
-            var response = await NetworkTasks.Get($"transfermarket?start=0&num=21&type={type}&definitionId={definitionID}");
-            var deserialisedResponse = JsonConvert.DeserializeObject<AuctionInfo>(response.ResponseString);
+            var response = await NetworkTasks.Get($"{BaseURL}transfermarket?start=0&num=21&type=player&definitionId={resourceId}");
+            var deserialisedResponse = JsonConvert.DeserializeObject<NetworkAuctionInfo>(response.ResponseString);
             return deserialisedResponse.auctionInfo.Count() < 1 ? 0 : deserialisedResponse.auctionInfo.OrderBy(items => items.BuyNowPrice).First().BuyNowPrice;
         }
 
-        public async Task ResolveUnassignedAsync()
+        public async Task DeleteSoldItemsFromTradepile()
         {
             Sleep();
-            var response = await NetworkTasks.Get("purchased/items");
-            var unassignedItems = JsonConvert.DeserializeObject<Unassigned>(response.ResponseString);
-            foreach (var item in unassignedItems.itemdata)
-            {
-                Thread.Sleep(new Random().Next(4000, 5000));
-                await MoveSingleItemToTradePileAsync(item.id);
-            }
+            await NetworkTasks.Delete($"{BaseURL}trade/sold");
         }
 
-        public async Task RemoveSoldItemsFromTradepile()
+        public async Task MoveUnassignedItemToTradepileUsingPlayerInternalId(long playerInternalId)
         {
             Sleep();
-            await NetworkTasks.Delete("trade/sold");
+            var tradepileObject = CreateTradepileObjectUsingPlayerInternalId(playerInternalId);
+            await NetworkTasks.Put($"{BaseURL}item", tradepileObject);
         }
 
-        public async Task MoveSingleItemToTradePileAsync(long playerInternalID)
-        {
-            Sleep();
-            var tradePileObject = CreateTradepileObject(playerInternalID);
-            await NetworkTasks.Put("item", tradePileObject);
-        }
-
-        private TradePile CreateTradepileObject(long playerInternalID)
+        private TradePile CreateTradepileObjectUsingPlayerInternalId(long playerInternalId)
         {
             return new TradePile
             {
                 itemData = new List<TradePile.ItemData> {
                     new TradePile.ItemData{
-                        id = playerInternalID,
+                        id = playerInternalId,
                         pile = "trade"
                     }
                 }
             };
         }
 
-        public async Task<AuctionInfo> GetTradePileAsync()
+        public async Task<NetworkAuctionInfo> GetTradePileAsync()
         {
             Sleep();
-            var networkTasks = new NetworkTasks(ViewModel.SessionID);
-            var response = await networkTasks.Get("{BaseURL}tradepile");
-            return JsonConvert.DeserializeObject<AuctionInfo>(response.ResponseString);
+            var response = await NetworkTasks.Get($"{BaseURL}tradepile");
+            return JsonConvert.DeserializeObject<NetworkAuctionInfo>(response.ResponseString);
         }
 
-        public async Task<bool> BuyItemAsync(long tradeID, long price)
+        public async Task<bool> BuyItemUsingTradeIdAndBuyNowPriceAsync(long tradeId, long buyNowPrice)
         {
-            Sleep();
-            var response = await NetworkTasks.Put($"{tradeID}/bid", new Bid { bid = price.ToString() });
+            var response = await NetworkTasks.Put($"{BaseURL}trade/{tradeId}/bid", new Bid { bid = buyNowPrice.ToString() });
             return response.StatusCode == 200;
         }
 
-        public async Task SellItemAsync(long itemID, int buyNowPrice, int duration)
+        public async Task SellItemUsingItemDataIdAndBuyNowPriceAsync(long itemDataId, int buyNowPrice)
         {
             Sleep();
-            var sellObject = CreateSellObject(buyNowPrice, duration, itemID);
-            await NetworkTasks.Post("auctionhouse", sellObject);
+            var sellObject = CreateSellObjectUsingItemIdAndBuyNowPrice(itemDataId, buyNowPrice);
+            await NetworkTasks.Post($"{BaseURL}auctionhouse", sellObject);
         }
 
-        private Sell CreateSellObject(int buyNowPrice, int duration, long itemID)
+        private Sell CreateSellObjectUsingItemIdAndBuyNowPrice(long itemId, int buyNowPrice)
         {
             return new Sell
             {
                 buyNowPrice = buyNowPrice,
-                duration = duration,
+                duration = ViewModel.SelectedDuration,
                 startingBid = new General(ViewModel).CalculatePreviousBid(buyNowPrice),
-                itemData = new Sell.ItemData { id = itemID }
+                itemData = new Sell.ItemData { id = itemId }
             };
         }
 
-        public async Task<List<AuctionInfo.ItemModel>> SearchMultiplePagesAsync(Filter filter)
+        public async Task<List<NetworkAuctionInfo.ItemModel>> SearchChemistryStyleUsingChemistryStyleItemAsync(ChemistryStyleItem chemistryStyleItem)
         {
             var pageNumber = 0;
-            var allResults = new List<AuctionInfo.ItemModel>();
+            var allPagesResults = new List<NetworkAuctionInfo.ItemModel>();
 
             while (true)
             {
                 Sleep();
-                var url = PlayerURL.Generate(filter, pageNumber++);
+                ChemistryStyleURL = new ChemistryStyleURL(chemistryStyleItem);
+                var url = ChemistryStyleURL.GenerateUsingPageNumber(pageNumber++);
                 var getResponse = await NetworkTasks.Get(url);
-                var pageResults =  JsonConvert.DeserializeObject<AuctionInfo>(getResponse.ResponseString).auctionInfo;
-                allResults.AddRange(pageResults);
-                if (pageResults.Count() < 21) break;
+                var deserialisedResponse = JsonConvert.DeserializeObject<NetworkAuctionInfo>(getResponse.ResponseString).auctionInfo;
+                allPagesResults.AddRange(deserialisedResponse);
+                if (deserialisedResponse.Count() < 21) break;
             }
-
-            return allResults;
+            return allPagesResults;
         }
 
-        public async Task<List<AuctionInfo.ItemModel>> SearchAsync(Filter filter)
+        public async Task<List<NetworkAuctionInfo.ItemModel>> SearchPlayerUsingPlayerItemAsync(PlayerItem playerItem)
         {
-            Sleep();
-            var url = GenerateURL(filter);
-            var networkTasks = new NetworkTasks(ViewModel.SessionID);
-            var response = await networkTasks.Get(url);
-            return JsonConvert.DeserializeObject<AuctionInfo>(response.ResponseString).auctionInfo.ToList();
-        }
+            var pageNumber = 0;
+            var allPagesResults = new List<NetworkAuctionInfo.ItemModel>();
 
-        private string GenerateURL(Filter filter)
-        {
-            switch (filter.Type)
+            while (true)
             {
-                case Declarations.CHEMISTRY_STYLE:
-                    return ChemistryStyleURL.Generate(filter);
-                case Declarations.PLAYER:
-                    return PlayerURL.Generate(filter);
-                default:
-                    throw new InvalidEnumArgumentException();
+                Sleep();
+                PlayerURL = new PlayerURL(playerItem);
+                var url = PlayerURL.GenerateUsingPageNumber(pageNumber++);
+                var getResponse = await NetworkTasks.Get(url);
+                var deserialisedResponse =  JsonConvert.DeserializeObject<NetworkAuctionInfo>(getResponse.ResponseString).auctionInfo;
+                allPagesResults.AddRange(deserialisedResponse);
+                if (deserialisedResponse.Count() < 21) break;
             }
+            return allPagesResults;
         }
+
+        //private string GenerateURL(IMarketplaceItem item)
+        //{
+        //    switch (item.ItemType)
+        //    {
+        //        case Declarations.CHEMISTRY_STYLE:
+        //            var chemistryStyleURL = new ChemistryStyleURL((ChemistryStyleItem)item);
+        //            return chemistryStyleURL.Generate();
+        //        case Declarations.PLAYER:
+        //            var playerURL = new PlayerURL((PlayerItem)item);
+        //            return playerURL.Generate();
+        //        default:
+        //            throw new InvalidEnumArgumentException();
+        //    }
+        //}
 
         private void Sleep()
         {

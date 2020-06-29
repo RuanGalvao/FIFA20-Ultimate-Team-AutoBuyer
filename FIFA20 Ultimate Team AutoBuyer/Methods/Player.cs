@@ -8,7 +8,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
 {
     public static class Player
     {
-        private static readonly IEnumerable<Models.Filter> allPlayers;
+        private static readonly IEnumerable<PlayerItem> allPlayers;
 
         static Player()
         {
@@ -18,17 +18,17 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
                 string json = r.ReadToEnd();
                 var response = JsonConvert.DeserializeObject<Models.NetworkPlayer>(json);
 
-                allPlayers = response.Players.Select(p => new Models.Filter
+                allPlayers = response.Players.Select(p => new PlayerItem
                 {
-                    ID = p.id,
+                    Id = p.id,
                     IsLegend = false,
-                    PlayerName = string.IsNullOrEmpty(p.c) ? p.f + ' ' + p.l : p.c,
+                    FriendlyName = string.IsNullOrEmpty(p.c) ? p.f + ' ' + p.l : p.c,
                     Rating = p.r
-                }).Concat(response.LegendsPlayers.Select(p => new Models.Filter
+                }).Concat(response.LegendsPlayers.Select(p => new PlayerItem
                 {
-                    ID = p.id,
+                    Id = p.id,
                     IsLegend = true,
-                    PlayerName = string.IsNullOrEmpty(p.c) ? p.f + ' ' + p.l : p.c,
+                    FriendlyName = string.IsNullOrEmpty(p.c) ? p.f + ' ' + p.l : p.c,
                     Rating = p.r
                 }));
             }
@@ -38,7 +38,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
         {
             if (playerName == null) throw new ArgumentNullException("playerName");
             if (string.IsNullOrWhiteSpace(playerName)) throw new ArgumentException("playerName");
-            return allPlayers.Where(player => string.Equals(player.PlayerName, playerName, StringComparison.OrdinalIgnoreCase)).Select(player => player.ID).FirstOrDefault();
+            return allPlayers.Where(player => string.Equals(player.FriendlyName, playerName, StringComparison.OrdinalIgnoreCase)).Select(player => player.Id).FirstOrDefault();
         }
 
         public static int GetID(string playerName, int rating)
@@ -46,22 +46,24 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
             if (playerName == null) throw new ArgumentNullException("playerName");
             if (string.IsNullOrWhiteSpace(playerName)) throw new ArgumentException("playerName");
             if (rating <= 0) throw new ArgumentException("rating");
-            return allPlayers.Where(player => player.Rating == rating && string.Equals(player.PlayerName, playerName, StringComparison.OrdinalIgnoreCase)).Select(player => player.ID).FirstOrDefault();
+            return allPlayers.Where(player => player.Rating == rating && string.Equals(player.FriendlyName, playerName, StringComparison.OrdinalIgnoreCase)).Select(player => player.Id).FirstOrDefault();
         }
             
         public static string GetName(int playerID)
         {
             if (playerID <= 0) throw new ArgumentException("playerID");
-            return allPlayers.Where(player => player.ID == playerID).Select(player => player.PlayerName).FirstOrDefault();
+            var playerName = allPlayers.Where(player => player.Id == playerID).Select(player => player.FriendlyName).FirstOrDefault();
+            if (string.IsNullOrEmpty(playerName)) throw new Exception("Unable to resolve PlayerID");
+            return playerName;
         }
 
         public static int GetRating(int playerID)
         {
             if (playerID <= 0) throw new ArgumentException("playerID");
-            return allPlayers.Where(player=> player.ID == playerID).Select(player => player.Rating).FirstOrDefault();
+            return allPlayers.Where(player=> player.Id == playerID).Select(player => player.Rating).FirstOrDefault();
         }
 
-        public static List<Models.Filter> GetAll()
+        public static List<PlayerItem> GetAll()
         {
             return allPlayers.ToList();
         }
