@@ -13,20 +13,6 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
             ViewModel = viewModel;
         }
 
-        public string AddCommasToNumericString(string numericString)
-        {
-            //var isNumeric = int.TryParse(numericString, out int n);
-            //if (!isNumeric) return numericString;
-            return string.Format("{0:n0}", numericString); //1376 -> 1,376
-        }
-
-        public string ItemTypeToFriendlyName(string itemType)
-        {
-            if (itemType == "player") return Declarations.PLAYER;
-            if (itemType == "chemistryStyle") return Declarations.CHEMISTRY_STYLE;
-            throw new InvalidOperationException();
-        }
-
         public int CalculateMinPrice(int value)
         {
             if (value == 0) return value;

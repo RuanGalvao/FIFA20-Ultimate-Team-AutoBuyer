@@ -16,7 +16,6 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
 
         public int SearchPrice { get; set; }
         public string ItemType { get => Declarations.CHEMISTRY_STYLE; }
-        public int DefinitionId { get ; set ; }
         public int MinPrice { get ; set; }
         public int MaxPrice { get; set; }
     }

@@ -15,7 +15,10 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
     public partial class MainWindow : Window
     {
         private readonly viewModel ViewModel = new viewModel();
+
         private readonly Validate Validate;
+        private readonly General General;
+        private readonly File File;
 
         private DateTime nextRunTime;
         private TimeSpan addDelay;
@@ -29,7 +32,10 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
             var searchItemFetcher = new SearchItemWorker(ViewModel);
             var checkTradePileWorker = new RefreshTradePileWorker(ViewModel);
             var workerHandler = new WorkerHandler(ViewModel, searchItemFetcher, checkTradePileWorker);
+
             Validate = new Validate(ViewModel);
+            General = new General(ViewModel);
+            File = new File(ViewModel);
 
             nextRunTime = DateTime.Now;
             addDelay = new TimeSpan(0, 0, 0);
@@ -67,14 +73,12 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
 
         private void loadFilter_Click(object sender, RoutedEventArgs e)
         {
-            var file = new File(ViewModel);
-            file.LoadMarketplaceItems();
+            File.LoadMarketplaceItems();
         }
 
         private void saveFilter_Click(object sender, RoutedEventArgs e)
         {
-            var file = new File(ViewModel);
-            file.SaveMarketplaceItems();
+            File.SaveMarketplaceItems();
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
@@ -86,7 +90,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (Validate.AllowAdd()) new General(ViewModel).AddFilter();
+            if (Validate.AllowAdd()) General.AddFilter();
         }
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
@@ -112,17 +116,18 @@ namespace FIFA20_Ultimate_Team_AutoBuyer
 
         private void txtMinPrice_LostFocus(object sender, RoutedEventArgs e)
         {
-            txtMinPrice.Text = Convert.ToString(new General(ViewModel).CalculateMinPrice(new Utils().ConvertToInt(txtMinPrice.Text)));
+
+            txtMinPrice.Text = Convert.ToString(General.CalculateMinPrice(Convert.ToInt32(txtMinPrice.Text)));
         }
 
         private void txtMaxPrice_LostFocus(object sender, RoutedEventArgs e)
         {
-            txtMaxPrice.Text = Convert.ToString(new General(ViewModel).CalculateMaxPrice(new Utils().ConvertToInt(txtMaxPrice.Text)));
+            txtMaxPrice.Text = Convert.ToString(General.CalculateMaxPrice(Convert.ToInt32(txtMaxPrice.Text)));
         }
 
         private void txtRating_LostFocus(object sender, RoutedEventArgs e)
         {
-            var value = new Utils().ConvertToInt(txtRating.Text);
+            var value = Convert.ToInt32(txtRating.Text);
             if (value > 99) txtRating.Text = "99";
         }
     }

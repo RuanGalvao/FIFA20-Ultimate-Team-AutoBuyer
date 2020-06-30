@@ -16,9 +16,9 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
-OutputDir=C:\Users\jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\output
+OutputDir=C:\Users\Jordan\Desktop\New\FIFA20-Ultimate-Team-AutoBuyer\output
 OutputBaseFilename=FIFA20 Ultimate Team AutoBuyer Installer
-SetupIconFile=C:\Users\jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team AutoBuyer\coins.ico
+SetupIconFile=C:\Users\Jordan\Desktop\New\FIFA20-Ultimate-Team-AutoBuyer\FIFA20 Ultimate Team AutoBuyer\coins.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -30,12 +30,12 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\FIFA20 Ultimate Team AutoBuyer.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\FIFA20 Ultimate Team AutoBuyer.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\FIFA20 Ultimate Team AutoBuyer.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\jordan\Desktop\FIFA20 Ultimate Team AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\players.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Jordan\Desktop\New\FIFA20-Ultimate-Team-AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\FIFA20 Ultimate Team AutoBuyer.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Jordan\Desktop\New\FIFA20-Ultimate-Team-AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\FIFA20 Ultimate Team AutoBuyer.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Jordan\Desktop\New\FIFA20-Ultimate-Team-AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\FIFA20 Ultimate Team AutoBuyer.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Jordan\Desktop\New\FIFA20-Ultimate-Team-AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Jordan\Desktop\New\FIFA20-Ultimate-Team-AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Jordan\Desktop\New\FIFA20-Ultimate-Team-AutoBuyer\FIFA20 Ultimate Team AutoBuyer\bin\x86\Release\players.json"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

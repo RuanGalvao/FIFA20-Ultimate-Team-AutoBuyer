@@ -16,7 +16,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
         public string GenerateUsingPageNumber(int pageNumber)
         {
             var sb = new StringBuilder(baseURL);
-            sb.Append(GeneratePageNumber(pageNumber));
+            sb.Append(AppendPageNumber(pageNumber));
             sb.Append(AppendItemType());
             sb.Append(AppendID());
             sb.Append(AppendPostion());
@@ -29,7 +29,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
         public string Generate()
         {
             var sb = new StringBuilder(baseURL);
-            sb.Append(GeneratePageNumber(0));
+            sb.Append(AppendPageNumber(0));
             sb.Append(AppendItemType());
             sb.Append(AppendID());
             sb.Append(AppendPostion());
@@ -39,7 +39,7 @@ namespace FIFA20_Ultimate_Team_AutoBuyer.Methods
             return sb.ToString();
         }
 
-        private string GeneratePageNumber(int pageNumber)
+        private string AppendPageNumber(int pageNumber)
         {
             return $"start={pageNumber * 20}&num=21";
         }
